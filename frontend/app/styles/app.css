@@ -3,6 +3,7 @@
     display: flex;
     -webkit-flex-direction: row;
    flex-direction: row;
+   min-height: 98vh;
 }
 
 .nav-panel {
@@ -22,14 +23,18 @@
 }
 
 body {
+    margin: 0px;
     background-color: #d5dae6;
     font-family: 'Droid Sans', sans-serif;
-
 }
 
 .main-content {
-    min-width: 500px;
+    min-width: 300px;
     width: 100%;
+}
+
+.inner-container {
+    padding-right: 1em;
 }
 
 .title {
