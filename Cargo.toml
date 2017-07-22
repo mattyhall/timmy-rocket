@@ -1,0 +1,8 @@
+[package]
+name = "timmy-rocket"
+version = "0.1.0"
+authors = ["Matthew Hall <matthew@quickbeam.me.uk>"]
+
+[dependencies]
+rocket = "0.3.0"
+rocket_codegen = "0.3.0"
