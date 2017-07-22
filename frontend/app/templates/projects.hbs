@@ -1,7 +1,12 @@
-{{#each model as |proj|}}
-    <h3>{{proj.title}}</h3>
-    <p class="description">{{proj.description}}</p>
-    <hr/>
-{{/each}}
+<div class="title"><h2>Projects</h2></div>
 
-{{outlet}}
+<div class="inner-container">
+    {{#each model as |proj|}}
+        <div class="project-item">
+            <h3>{{proj.title}}</h3>
+            {{# if proj.description}}<p class="description">{{proj.description}}</p>{{/if}}
+        </div>
+    {{/each}}
+
+    {{outlet}}
+</div>
