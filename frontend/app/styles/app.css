@@ -91,10 +91,24 @@ body {
 @media only screen and (max-device-width : 480px) {
     .nav-panel {
         width: 100%;
-        height: 250px;
+    }
+
+    .nav-panel > ul {
+        margin-top: 1.3em;
+        margin-bottom: 1em;
+    }
+
+    .nav-panel > ul > li {
+        display: inline-block;
+        padding-right: 1em;
+        margin-bottom: 0;
     }
 
     .header {
         display: none;
+    }
+
+    .container {
+        align-content: flex-start;
     }
 }
