@@ -70,6 +70,7 @@ body {
 
 .inner-container {
     padding-right: 1em;
+    margin-top: 1em;
 }
 
 .title {
@@ -87,13 +88,25 @@ body {
 .project-item {
     padding-left: 1em;
     color: #8c97b2;
+    margin-bottom: 1em;
 }
 
-.project-item > h3 {
+.project-title {
     color: #687189;
     background-color: #eef1f7;
     margin-bottom: 0px;
     padding: 0.7em 0.2em 0.7em 0.7em;
+}
+
+.project-title > h3 {
+    display: inline;
+}
+
+.project-title > a {
+    float: right;
+    margin-right: 0.3em;
+    text-decoration: none;
+    color: #687189;
 }
 
 .project-item > p {

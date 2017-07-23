@@ -1,0 +1,21 @@
+<div class="title">
+    <h2>Projects</h2>
+    <div class="toggle-group subtitle">
+        {{toggle-button text='Active' toggled=true act=(action 'filter_toggled')}}
+        {{toggle-button text='Inactive' toggled=true act=(action 'filter_toggled')}}
+    </div>
+</div>
+
+<div class="inner-container">
+    {{#each data as |proj|}}
+        <div class="project-item">
+            <div class="project-title">
+                <h3>{{proj.title}}</h3>
+                {{#link-to "projects.edit"}}{{fa-icon "pencil"}}{{/link-to}}
+            </div>
+            {{# if proj.description}}<p class="description">{{proj.description}}</p>{{/if}}
+        </div>
+    {{/each}}
+
+    {{outlet}}
+</div>
