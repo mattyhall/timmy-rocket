@@ -120,7 +120,6 @@ body {
     padding: 0.3em 0.5em 0.3em 0.5em;
     min-width: 80px;
     text-align: center;
-    border-radius: 20px;
     border: 1px solid #687189;
     color: #687189;
     cursor: pointer;
@@ -132,11 +131,19 @@ body {
             user-select: none;
 }
 
+.toggle-btn {
+    border-radius: 20px;
+}
+
 .green-btn {
     background-color: #2ec6c8;
     border: 1px solid #2ec6c8;
     color: #fff;
-    border-radius: 0px;
+}
+
+.grey-btn {
+    color: #687189;
+    border: 1px solid #687189;
 }
 
 .toggled {
