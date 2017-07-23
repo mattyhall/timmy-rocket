@@ -132,6 +132,13 @@ body {
             user-select: none;
 }
 
+.green-btn {
+    background-color: #2ec6c8;
+    border: 1px solid #2ec6c8;
+    color: #fff;
+    border-radius: 0px;
+}
+
 .toggled {
     background-color: #5ab0ee;
     border: 1px solid #5ab0ee;
@@ -149,6 +156,51 @@ body {
 
 .toggle-group .btn {
     margin-right: 0.5em;
+}
+
+.pane {
+    background-color: #ffffff;
+    color: #8c97b2;
+    margin-left: 1em;
+    padding: 0.7em 0.7em 0.7em 0.7em;
+}
+
+.input-group {
+    margin-top: 1em;
+    vertical-align: top;
+}
+
+.input-group > label {
+    display: block;
+    min-width: 150px;
+    font-weight: bold;
+}
+
+.input-group > input {
+    color: #8c97b2;
+    background-color: #ffffff;
+    border: 3px solid #eef1f7;
+    padding: 0.4em 0.5em 0.4em 0.5em;
+}
+
+.input-group > input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-group > textarea {
+    width: 100%;
+    box-sizing: border-box;
+    color: #8c97b2;
+    background-color: #ffffff;
+    border: 3px solid #eef1f7;
+    padding: 0.4em 0.5em 0.4em 0.5em;
+    font-family: 'Droid Sans', sans-serif;
+    resize: vertical;
+}
+
+#save-btn {
+    margin-top: 1.5em;
 }
 
 @media only screen and (max-device-width : 480px) {

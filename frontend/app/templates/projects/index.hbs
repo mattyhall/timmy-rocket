@@ -11,7 +11,7 @@
         <div class="project-item">
             <div class="project-title">
                 <h3>{{proj.title}}</h3>
-                {{#link-to "projects.edit"}}{{fa-icon "pencil"}}{{/link-to}}
+                {{#link-to "projects.edit" proj.id}}{{fa-icon "pencil"}}{{/link-to}}
             </div>
             {{# if proj.description}}<p class="description">{{proj.description}}</p>{{/if}}
         </div>
