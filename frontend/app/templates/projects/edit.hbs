@@ -9,10 +9,10 @@
             <label>Title</label>
             {{input type="text" value=model.title}}
             <ul class="error-group">
-                {{#each model.errors.title as |error|}}
+                {{#each errors.title as |error|}}
                     <li class="error">
                         {{fa-icon "exclamation-triangle"}}
-                        {{error.message}}</li>
+                        {{error}}</li>
                 {{/each}}
             </ul>
         </div>
