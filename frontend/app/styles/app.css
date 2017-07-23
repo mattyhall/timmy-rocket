@@ -38,12 +38,27 @@ body {
 .nav-panel > ul {
     margin-top: 2em;
     list-style: none;
+    padding: 0;
 
 }
 
-.nav-panel > ul > li {
-    margin-bottom: 2em;
+.nav-panel a {
+    text-align: center;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-bottom: 0.3em;
     font-weight: bold;
+    text-decoration: none;
+    color: #f0f4f6;
+    display: block;
+}
+
+.nav-panel a.active {
+    background-color: #2a394f;
+}
+
+.nav-panel a:hover {
+    background-color: #2a394f;
 }
 
 .header {
@@ -129,14 +144,18 @@ body {
     }
 
     .nav-panel > ul {
-        margin-top: 1.3em;
-        margin-bottom: 1em;
+        margin-top: 0.2em;
+        margin-bottom: 0em;
     }
 
     .nav-panel > ul > li {
         display: inline-block;
-        padding-right: 1em;
         margin-bottom: 0;
+    }
+
+    .nav-panel a {
+        padding-left: 1em;
+        padding-right: 1em;
     }
 
     .header {
