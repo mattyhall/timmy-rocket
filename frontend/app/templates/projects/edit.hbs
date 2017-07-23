@@ -6,16 +6,16 @@
     <div class="pane">
         <div class="input-group">
             <label>Name</label>
-            {{input type="text"}}
+            {{input type="text" value=model.title}}
         </div>
         <div class="input-group">
             <label>Description</label>
-            {{textarea rows=3}}
+            {{textarea rows=3 value=model.description}}
         </div>
         <div class="input-group">
             <label>Active</label>
-            {{input type="checkbox"}}
+            {{input type="checkbox" checked=model.active}}
         </div>
-        <span id="save-btn" class="btn green-btn">Save</span>
+        <span id="save-btn" class="btn green-btn" {{action "save" onclick}}>Save</span>
     </div>
 </div>

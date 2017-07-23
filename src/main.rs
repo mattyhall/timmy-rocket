@@ -3,7 +3,8 @@
 
 extern crate rocket;
 extern crate timmy_rocket;
-#[macro_use] extern crate rocket_contrib;
+#[macro_use]
+extern crate rocket_contrib;
 extern crate diesel;
 extern crate rocket_cors;
 
@@ -22,7 +23,11 @@ struct ProjectsQS {
 #[get("/projects")]
 fn get_projects(conn: DbConn) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
-    projects.load::<Project>(&*conn).map(|projs| Json(json!({"projects": projs})))
+    projects.load::<Project>(&*conn).map(|projs| {
+        Json(json!({
+            "projects": projs
+        }))
+    })
 }
 
 #[get("/projects?<qs>")]
@@ -33,7 +38,21 @@ fn get_projects_qs(conn: DbConn, qs: ProjectsQS) -> QueryResult<Json> {
     } else {
         projects.load::<Project>(&*conn)
     };
-    projs.map(|projs| Json(json!({"projects": projs})))
+    projs.map(|projs| {
+        Json(json!({
+            "projects": projs
+        }))
+    })
+}
+
+#[get("/projects/<p_id>")]
+fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
+    use timmy_rocket::schema::projects::dsl::*;
+    projects.find(p_id).first(&*conn).map(|proj: Project| {
+        Json(json!({
+            "project": proj
+        }))
+    })
 }
 
 fn main() {
@@ -45,5 +64,9 @@ fn main() {
         allow_credentials: true,
         ..Default::default()
     };
-    rocket::ignite().manage(init_pool()).attach(options).mount("/", routes![get_projects, get_projects_qs]).launch();
+    rocket::ignite()
+        .manage(init_pool())
+        .attach(options)
+        .mount("/", routes![get_projects, get_projects_qs, get_project])
+        .launch();
 }
