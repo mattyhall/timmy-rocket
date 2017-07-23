@@ -24,13 +24,8 @@ export default Ember.Controller.extend({
     },
 
     actions: {
-        filter_toggled(item, val) {
-            if (item == 'Active') {
-                this.set('active_f', val);
-            } else {
-                this.set('inactive_f', val);
-            }
+        filter() {
             this.filter();
-        }
+        },
     }
 });

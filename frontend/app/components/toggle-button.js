@@ -9,7 +9,7 @@ export default Ember.Component.extend({
         toggle() {
             let new_val = !this.get('toggled');
             this.set('toggled', new_val);
-            this.get('act')(this.get('text'), new_val);
+            this.get('act')();
         }
     }
 });
