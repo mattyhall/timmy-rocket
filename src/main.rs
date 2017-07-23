@@ -1,4 +1,4 @@
-#![feature(plugin)]
+#![feature(plugin, custom_derive)]
 #![plugin(rocket_codegen)]
 
 extern crate rocket;
@@ -14,10 +14,26 @@ use rocket_contrib::{Json, Value};
 use timmy_rocket::db_help::{init_pool, DbConn};
 use timmy_rocket::models::*;
 
+#[derive(FromForm)]
+struct ProjectsQS {
+    active: Option<bool>,
+}
+
 #[get("/projects")]
 fn get_projects(conn: DbConn) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
-    projects.filter(active.eq(true)).load::<Project>(&*conn).map(|projs| Json(json!({"projects": projs})))
+    projects.load::<Project>(&*conn).map(|projs| Json(json!({"projects": projs})))
+}
+
+#[get("/projects?<qs>")]
+fn get_projects_qs(conn: DbConn, qs: ProjectsQS) -> QueryResult<Json> {
+    use timmy_rocket::schema::projects::dsl::*;
+    let projs = if let Some(val) = qs.active {
+        projects.filter(active.eq(val)).load::<Project>(&*conn)
+    } else {
+        projects.load::<Project>(&*conn)
+    };
+    projs.map(|projs| Json(json!({"projects": projs})))
 }
 
 fn main() {
@@ -29,5 +45,5 @@ fn main() {
         allow_credentials: true,
         ..Default::default()
     };
-    rocket::ignite().manage(init_pool()).attach(options).mount("/", routes![get_projects]).launch();
+    rocket::ignite().manage(init_pool()).attach(options).mount("/", routes![get_projects, get_projects_qs]).launch();
 }

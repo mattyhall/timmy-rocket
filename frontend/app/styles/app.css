@@ -58,7 +58,7 @@ body {
 }
 
 .title {
-    padding-left: 1em;
+    padding-left: 1.5em;
     background-color: #eef1f7;
     padding-top: 1em;
     padding-bottom: 1em;
@@ -66,7 +66,6 @@ body {
 
 .title > h2 {
     margin: 0px;
-    margin-left: 0.5em;
     color: #687189;
 }
 
@@ -86,6 +85,42 @@ body {
     margin: 0px;
     background-color: #ffffff;
     padding: 0.7em 0.2em 0.7em 1.2em
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid #687189;
+    color: #687189;
+    cursor: pointer;
+ -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
+}
+
+.toggled {
+    background-color: #5ab0ee;
+    border: 1px solid #5ab0ee;
+    color: #f0f4f6;
+}
+
+.subtitle {
+    margin-top: 1em;
+    margin-left: 0.5em;
+}
+
+.toggle-group > div {
+    display: inline;
+}
+
+.toggle-group .btn {
+    margin-right: 0.5em;
 }
 
 @media only screen and (max-device-width : 480px) {

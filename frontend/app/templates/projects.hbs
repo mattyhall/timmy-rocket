@@ -1,7 +1,13 @@
-<div class="title"><h2>Projects</h2></div>
+<div class="title">
+    <h2>Projects</h2>
+    <div class="toggle-group subtitle">
+        {{toggle-button text='Active' toggled=true act=(action 'filter_toggled')}}
+        {{toggle-button text='Inactive' toggled=true act=(action 'filter_toggled')}}
+    </div>
+</div>
 
 <div class="inner-container">
-    {{#each model as |proj|}}
+    {{#each data as |proj|}}
         <div class="project-item">
             <h3>{{proj.title}}</h3>
             {{# if proj.description}}<p class="description">{{proj.description}}</p>{{/if}}
