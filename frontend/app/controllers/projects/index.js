@@ -2,10 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
     active_f: true,
-    inactive_f: true,
+    inactive_f: false,
     data: [],
     init() {
-        this.set('data', this.get('store').findAll('project'));
+        this.filter();
     },
 
     filter() {
