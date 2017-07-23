@@ -10,7 +10,8 @@ extern crate serde_derive;
 extern crate diesel;
 extern crate rocket_cors;
 
-use rocket::request::Form;
+use rocket::http::Status;
+use rocket::response::status::Custom;
 use rocket_cors::{AllowedOrigins, AllowedHeaders};
 use rocket::http::Method;
 use diesel::prelude::*;
@@ -64,9 +65,17 @@ struct WrappedProject {
 }
 
 #[put("/projects/<p_id>", data = "<proj>")]
-fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> QueryResult<Json> {
+fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl::*;
     let proj = proj.0.project;
+    if proj.title.trim().len() == 0 {
+        return Err(Custom(
+            Status::UnprocessableEntity,
+            Json(json!({"errors": [
+                    {"detail": "A project must have a title",
+                     "source": {"pointer": "data/attributes/title"}}]})),
+        ));
+    }
     diesel::update(projects.filter(id.eq(p_id)))
         .set((
             title.eq(proj.title),
@@ -75,6 +84,7 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> QueryResu
         ))
         .execute(&*conn)
         .map(|_| Json(json!({})))
+        .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
 fn main() {
