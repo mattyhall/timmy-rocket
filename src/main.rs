@@ -5,9 +5,12 @@ extern crate rocket;
 extern crate timmy_rocket;
 #[macro_use]
 extern crate rocket_contrib;
+#[macro_use]
+extern crate serde_derive;
 extern crate diesel;
 extern crate rocket_cors;
 
+use rocket::request::Form;
 use rocket_cors::{AllowedOrigins, AllowedHeaders};
 use rocket::http::Method;
 use diesel::prelude::*;
@@ -55,6 +58,25 @@ fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
     })
 }
 
+#[derive(Deserialize)]
+struct WrappedProject {
+    project: NewProject,
+}
+
+#[put("/projects/<p_id>", data = "<proj>")]
+fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> QueryResult<Json> {
+    use timmy_rocket::schema::projects::dsl::*;
+    let proj = proj.0.project;
+    diesel::update(projects.filter(id.eq(p_id)))
+        .set((
+            title.eq(proj.title),
+            description.eq(proj.description),
+            active.eq(proj.active),
+        ))
+        .execute(&*conn)
+        .map(|_| Json(json!({})))
+}
+
 fn main() {
     let all_origins = AllowedOrigins::all();
     let options = rocket_cors::Cors {
@@ -67,6 +89,9 @@ fn main() {
     rocket::ignite()
         .manage(init_pool())
         .attach(options)
-        .mount("/", routes![get_projects, get_projects_qs, get_project])
+        .mount(
+            "/",
+            routes![get_projects, get_projects_qs, get_project, put_project],
+        )
         .launch();
 }
