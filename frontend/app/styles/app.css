@@ -1,3 +1,9 @@
+body {
+    margin: 0px;
+    background-color: #d5dae6;
+    font-family: 'Droid Sans', sans-serif;
+}
+
 .container {
     display: -webkit-flex;
     display: flex;
@@ -6,12 +12,16 @@
    min-height: 98vh;
 }
 
+.main-content {
+    width: 100%;
+}
+
 .nav-panel {
     margin: 0;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
     width: 200px;
     min-width: 100px;
-    -webkit-flex: initial;
-    flex: initial;
     list-style: none;
     background-color: #364760;
     color: #f0f4f6;
@@ -22,16 +32,6 @@
     font-weight: bold;
 }
 
-body {
-    margin: 0px;
-    background-color: #d5dae6;
-    font-family: 'Droid Sans', sans-serif;
-}
-
-.main-content {
-    min-width: 300px;
-    width: 100%;
-}
 
 .inner-container {
     padding-right: 1em;
@@ -66,8 +66,4 @@ body {
     margin: 0px;
     background-color: #ffffff;
     padding: 0.7em 0.2em 0.7em 1.2em
-}
-
-.inner-container {
-    padding-left: 1em;
 }
