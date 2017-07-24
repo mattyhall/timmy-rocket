@@ -282,6 +282,53 @@ body {
     text-align: center;
 }
 
+.stopwatch {
+    border-radius: 50%;
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    border: 2px solid #364760;
+    position: relative;
+}
+
+.hand {
+    transform-origin: 50% 100%;
+    position: absolute;
+    animation-delay: 0.4s;
+}
+
+@keyframes rotation {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(359deg);}
+}
+
+.second-hand {
+    background-color: red;
+    top: 5%;
+    left: 49%;
+    width: 1%;
+    height: 45%;
+    animation: rotation 0.7s;
+}
+
+.minute-hand {
+    background-color: #687189;
+    top: 10%;
+    left: 48%;
+    width: 2%;
+    height: 40%;
+    animation: rotation 0.9s;
+}
+
+.hour-hand {
+    background-color: #687189;
+    top: 20%;
+    left: 48%;
+    width: 2%;
+    height: 30%;
+    animation: rotation 1.1s;
+}
+
 @media only screen and (max-device-width : 480px) {
     .nav-panel {
         width: 100%;
