@@ -51,6 +51,7 @@ body {
     text-decoration: none;
     color: #f0f4f6;
     display: block;
+    outline: 0;
 }
 
 .nav-panel a.active {
@@ -124,6 +125,7 @@ body {
     text-decoration: none;
     color: #687189;
     margin-left: 0.2em;
+    outline: 0;
 }
 
 .action-group > div {
