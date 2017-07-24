@@ -9,5 +9,12 @@ export default Ember.Route.extend({
 
     model() {
         return this.get('store').createRecord('project', {active: true});
+    },
+
+    actions: {
+        willTransition() {
+            let model = this.controllerFor('projects.edit').get('model');
+            model.deleteRecord();
+        }
     }
 });
