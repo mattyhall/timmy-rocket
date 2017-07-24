@@ -103,6 +103,10 @@ body {
     display: inline;
 }
 
+.project-title > h3.inactive {
+    font-weight: 500;
+}
+
 .project-title a {
     text-decoration: underline;
     color: #687189;
