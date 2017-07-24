@@ -364,16 +364,6 @@ body {
 
 .minute-hand-initial {animation: rotation 0.9s;}
 
-.hour-hand {
-    background-color: #687189;
-    top: 20%;
-    left: 49%;
-    width: 2%;
-    height: 30%;
-}
-
-.hour-hand-initial {animation: rotation 1.1s;}
-
 @media only screen and (max-device-width : 480px) {
     .nav-panel {
         width: 100%;

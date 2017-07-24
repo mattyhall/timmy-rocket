@@ -43,7 +43,7 @@ export default Ember.Controller.extend({
     actions: {
         start() {
             this.set('initial', false);
-            this.set('start_time', moment(moment.now()).subtract(1.2, 'hour'));
+            this.set('start_time', moment.now());
         }
     }
 });
