@@ -102,6 +102,11 @@ body {
     display: inline;
 }
 
+.project-title a {
+    text-decoration: underline;
+    color: #687189;
+}
+
 
 .project-title .action-group {
     margin-right: 0.3em;
