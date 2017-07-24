@@ -1,5 +1,6 @@
 <div class="title">
     <h2>Projects</h2>
+    <div class="action-group">{{#link-to "projects.new"}}{{fa-icon "plus"}}{{/link-to}}</div>
     <div class="toggle-group subtitle">
         {{toggle-button text='Active' toggled=active_f act=(action 'filter')}}
         {{toggle-button text='Inactive' toggled=inactive_f act=(action 'filter')}}
