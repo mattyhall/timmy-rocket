@@ -19,7 +19,6 @@ export default Ember.Controller.extend({
         },
 
         cancel() {
-            this.get('model').rollbackAttributes();
             this.set('errors', null);
             history.back();
         }
