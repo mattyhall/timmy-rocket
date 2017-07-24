@@ -1,5 +1,5 @@
 <div class="title">
-    <h2>Edit Project</h2>
+    <h2>{{if isNew "New" "Edit"}} Project</h2>
 </div>
 
 
@@ -20,10 +20,13 @@
             <label>Description</label>
             {{textarea rows=3 value=model.description}}
         </div>
-        <div class="input-group">
-            <label>Active</label>
-            {{input type="checkbox" checked=model.active}}
-        </div>
+        {{#unless isNew}}
+            <div class="input-group">
+                <label>Active</label>
+                {{input type="checkbox" checked=model.active}}
+            </div>
+        {{/unless}}
+
         <span id="save-btn" class="btn green-btn" {{action "save" onclick}}>Save</span>
         <span class="btn grey-btn" {{action "cancel" onclick}}>Cancel</span>
     </div>

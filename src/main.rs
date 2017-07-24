@@ -87,6 +87,25 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Js
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
+#[post("/projects", data = "<proj>")]
+fn post_project(conn: DbConn, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
+    use timmy_rocket::schema::projects;
+    let proj = proj.0.project;
+    if proj.title.trim().len() == 0 {
+        return Err(Custom(
+            Status::UnprocessableEntity,
+            Json(json!({"errors": [
+                {"detail": "A project must have a title",
+                 "source": {"pointer": "data/attributes/title"}}]})),
+        ));
+    }
+    diesel::insert(&proj)
+        .into(projects::table)
+        .get_result::<Project>(&*conn)
+        .map(|proj| Json(json!({"project": proj})))
+        .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
+}
+
 fn main() {
     let all_origins = AllowedOrigins::all();
     let options = rocket_cors::Cors {
@@ -101,7 +120,7 @@ fn main() {
         .attach(options)
         .mount(
             "/",
-            routes![get_projects, get_projects_qs, get_project, put_project],
+            routes![get_projects, get_projects_qs, get_project, put_project, post_project],
         )
         .launch();
 }

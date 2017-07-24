@@ -1,4 +1,7 @@
-#[derive(Serialize, Deserialize, FromForm, Debug)]
+use super::schema::projects;
+
+#[derive(Insertable, Serialize, Deserialize, FromForm, Debug)]
+#[table_name="projects"]
 pub struct NewProject {
     pub title: String,
     pub description: Option<String>,
