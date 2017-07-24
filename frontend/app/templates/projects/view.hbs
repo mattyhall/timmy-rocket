@@ -1,5 +1,11 @@
 <div class="title">
     <h2>{{model.title}}</h2>
+    <div class="subtitle action-group">
+        <div class="action-group">
+            {{#link-to "projects.edit" proj.id}}{{fa-icon "pencil"}}{{/link-to}}
+            {{delete-button delete=(action "delete" proj)}}
+        </div>
+    </div>
 </div>
 
 
