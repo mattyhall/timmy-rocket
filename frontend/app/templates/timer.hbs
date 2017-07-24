@@ -9,12 +9,12 @@
                 <h3>Let's get productive!</h3>
             </div>
             <div class="dashboard-item-content">
-                {{stop-watch}}
+                {{stop-watch initial=initial hours=hours minutes=minutes seconds=seconds}}
 
-                {{#if timing}}
-                    <h3 class="timer">{{diff}}</h3>
+                {{#if initial}}
+                    <span class="btn green-btn" {{action "start"}}>Start</span>
                 {{else}}
-                <span class="btn green-btn" {{action "start"}}>Start</span>
+                    <h3 class="timer">{{hours}}:{{minutes}}:{{seconds}}</h3>
                 {{/if}}
             </div>
         </div>
