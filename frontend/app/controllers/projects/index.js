@@ -27,5 +27,11 @@ export default Ember.Controller.extend({
         filter() {
             this.filter();
         },
+
+        delete(project) {
+            project.deleteRecord();
+            var t = this;
+            project.save().then(() => t.filter());
+        }
     }
 });

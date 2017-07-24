@@ -102,11 +102,20 @@ body {
     display: inline;
 }
 
-.project-title > a {
-    float: right;
+
+.project-title .action-group {
     margin-right: 0.3em;
+    display: inline;
+}
+
+.action-group a {
     text-decoration: none;
     color: #687189;
+    margin-left: 0.2em;
+}
+
+.action-group > div {
+    display: inline;
 }
 
 .project-item > p {
@@ -135,6 +144,12 @@ body {
     border-radius: 20px;
 }
 
+.small-btn {
+    font-size: 0.8em;
+    padding: 0.2em 0.2em 0.2em 0.2em;
+    min-width: 20px;
+}
+
 .green-btn {
     background-color: #2ec6c8;
     border: 1px solid #2ec6c8;
@@ -144,6 +159,15 @@ body {
 .grey-btn {
     color: #687189;
     border: 1px solid #687189;
+}
+
+.red {
+    color: #d77a80 !important;
+}
+
+.red-btn {
+    color: #d77a80;
+    border: 1px solid #d77a80;
 }
 
 .toggled {

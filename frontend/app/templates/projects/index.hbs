@@ -11,7 +11,10 @@
         <div class="project-item">
             <div class="project-title">
                 <h3>{{proj.title}}</h3>
-                {{#link-to "projects.edit" proj.id}}{{fa-icon "pencil"}}{{/link-to}}
+                <div class="action-group">
+                    {{#link-to "projects.edit" proj.id}}{{fa-icon "pencil"}}{{/link-to}}
+                    {{delete-button delete=(action "delete" proj)}}
+                </div>
             </div>
             {{# if proj.description}}<p class="description">{{proj.description}}</p>{{/if}}
         </div>

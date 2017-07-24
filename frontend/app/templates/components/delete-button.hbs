@@ -1,0 +1,7 @@
+    <a href="#" class="{{if confirmation "red"}}" {{action "confirm"}}>{{fa-icon "trash"}}</a>
+{{# if confirmation }}
+        Are you sure?
+        <span class="btn small-btn red-btn" {{action "delete"}}>Yes</span>
+        <span class="btn small-btn grey-btn" {{action "confirm"}}>No</span>
+{{/if}}
+{{yield}}
