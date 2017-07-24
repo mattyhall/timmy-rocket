@@ -10,6 +10,12 @@
             </div>
             <div class="dashboard-item-content">
                 {{stop-watch}}
+
+                {{#if timing}}
+                    <h3 class="timer">{{diff}}</h3>
+                {{else}}
+                <span class="btn green-btn" {{action "start"}}>Start</span>
+                {{/if}}
             </div>
         </div>
     </div>
