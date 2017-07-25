@@ -54,7 +54,9 @@ fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
     let project: Project = p::projects.find(p_id).first(&*conn)?;
-    let acts: Vec<Activity> = Activity::belonging_to(&project).order(a::start_time.desc()).load::<Activity>(&*conn)?;
+    let acts: Vec<Activity> = Activity::belonging_to(&project)
+        .order(a::start_time.desc())
+        .load::<Activity>(&*conn)?;
     Ok(Json(json!({
         "project": {
             "id": project.id,
@@ -71,6 +73,7 @@ struct WrappedProject {
     project: NewProject,
 }
 
+
 #[put("/projects/<p_id>", data = "<proj>")]
 fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl::*;
@@ -79,8 +82,8 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Js
         return Err(Custom(
             Status::UnprocessableEntity,
             Json(json!({"errors": [
-                    {"detail": "A project must have a title",
-                     "source": {"pointer": "data/attributes/title"}}]})),
+                {"detail": "A project must have a title",
+                 "source": {"pointer": "data/attributes/title"}}]})),
         ));
     }
     diesel::update(projects.filter(id.eq(p_id)))
@@ -132,6 +135,34 @@ fn get_activities(conn: DbConn) -> QueryResult<Json> {
     })
 }
 
+#[get("/activities/<a_id>")]
+fn get_activity(conn: DbConn, a_id: i32) -> QueryResult<Json> {
+    use timmy_rocket::schema::activities::dsl::*;
+    activities.find(a_id).first::<Activity>(&*conn).map(|a| {
+        Json(json!({"activity": a}))
+    })
+}
+
+#[derive(Deserialize)]
+struct WrappedActivity {
+    activity: NewActivity,
+}
+
+#[put("/activities/<a_id>", data = "<act>")]
+fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>) -> Result<Json, Custom<Json>> {
+    use timmy_rocket::schema::activities::dsl::*;
+    let act = act.0.activity;
+    diesel::update(activities.filter(id.eq(a_id)))
+        .set((
+            description.eq(act.description),
+            start_time.eq(act.start_time),
+            end_time.eq(act.end_time),
+        ))
+        .execute(&*conn)
+        .map(|_| Json(json!({})))
+        .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
+}
+
 fn main() {
     let all_origins = AllowedOrigins::all();
     let options = rocket_cors::Cors {
@@ -148,7 +179,7 @@ fn main() {
             "/",
             routes![get_projects, get_projects_qs, get_project, put_project,
                     delete_project, post_project,
-                    get_activities],
+                    get_activities, get_activity, put_activity],
         )
         .launch();
 }

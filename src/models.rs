@@ -19,6 +19,16 @@ pub struct Project {
     pub active: bool,
 }
 
+#[derive(Insertable, Serialize, Deserialize, Debug)]
+#[table_name="activities"]
+pub struct NewActivity {
+    pub project_id: i32,
+    pub description: Option<String>,
+    pub start_time: NaiveDateTime,
+    pub end_time: NaiveDateTime,
+    pub tags: Vec<String>,
+}
+
 #[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Debug)]
 #[table_name="activities"]
 #[belongs_to(Project)]

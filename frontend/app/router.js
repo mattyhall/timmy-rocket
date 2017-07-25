@@ -11,6 +11,9 @@ Router.map(function() {
         this.route('new');
         this.route('view', {path: '/view/:id'});
         this.route('edit', {path: '/edit/:id' });
+        this.route('activities', function() {
+            this.route('edit', {path: '/edit/:id'});
+        });
     });
     this.route('timer');
 });

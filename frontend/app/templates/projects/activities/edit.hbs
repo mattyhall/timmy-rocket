@@ -1,0 +1,40 @@
+<div class="title">
+    <h2>{{if isNew "New" "Edit"}} Activity</h2>
+</div>
+
+
+<div class="inner-container">
+    <div class="pane">
+        <div class="input-group">
+            <label>Description</label>
+            {{input type="text" value=model.description}}
+        </div>
+        <div class="input-group">
+            <label>Start time</label>
+            {{input type="text" value=model.start_time}}
+            <ul class="error-group">
+                {{#each errors.start_time as |error|}}
+                    <li class="error">
+                        {{fa-icon "exclamation-triangle"}}
+                        {{error}}
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="input-group">
+            <label>End time</label>
+            {{input type="text" value=model.end_time}}
+            <ul class="error-group">
+                {{#each errors.end_time as |error|}}
+                    <li class="error">
+                        {{fa-icon "exclamation-triangle"}}
+                        {{error}}
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+
+        <span id="save-btn" class="btn green-btn" {{action "save" onclick}}>Save</span>
+        <span class="btn grey-btn" {{action "cancel" onclick}}>Cancel</span>
+    </div>
+</div>
