@@ -1,4 +1,4 @@
-#![feature(plugin, custom_derive)]
+#![feature(plugin, custom_derive, custom_attribute)]
 #![plugin(rocket_codegen)]
 #[macro_use] extern crate diesel;
 #[macro_use] extern crate diesel_codegen;

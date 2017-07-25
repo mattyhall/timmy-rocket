@@ -51,12 +51,19 @@ fn get_projects_qs(conn: DbConn, qs: ProjectsQS) -> QueryResult<Json> {
 
 #[get("/projects/<p_id>")]
 fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
-    use timmy_rocket::schema::projects::dsl::*;
-    projects.find(p_id).first(&*conn).map(|proj: Project| {
-        Json(json!({
-            "project": proj
-        }))
-    })
+    use timmy_rocket::schema::projects::dsl as p;
+    use timmy_rocket::schema::activities::dsl as a;
+    let project: Project = p::projects.find(p_id).first(&*conn)?;
+    let acts: Vec<Activity> = Activity::belonging_to(&project).order(a::start_time.asc()).load::<Activity>(&*conn)?;
+    Ok(Json(json!({
+        "project": {
+            "id": project.id,
+            "title": project.title,
+            "description": project.description,
+            "active": project.active,
+            "activities": acts,
+        }
+    })))
 }
 
 #[derive(Deserialize)]

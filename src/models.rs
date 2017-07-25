@@ -1,4 +1,5 @@
 use super::schema::projects;
+use super::schema::activities;
 use chrono::naive::NaiveDateTime;
 
 #[derive(Insertable, Serialize, Deserialize, FromForm, Debug)]
@@ -9,7 +10,8 @@ pub struct NewProject {
     pub active: bool,
 }
 
-#[derive(Queryable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Debug)]
+#[has_many(Activity)]
 pub struct Project {
     pub id: i32,
     pub title: String,
@@ -17,7 +19,9 @@ pub struct Project {
     pub active: bool,
 }
 
-#[derive(Queryable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Debug)]
+#[table_name="activities"]
+#[belongs_to(Project)]
 pub struct Activity {
     pub id: i32,
     pub project_id: i32,

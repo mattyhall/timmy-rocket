@@ -12,5 +12,9 @@
 <div class="inner-container">
     <div class="pane">
         <p>{{model.description}}</p>
+
+        {{#each model.activities as |act|}}
+            {{act.description}}
+        {{/each}}
     </div>
 </div>
