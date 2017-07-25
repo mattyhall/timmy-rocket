@@ -47,6 +47,19 @@
     > .hand-centre {
         @include centre-part(5px, red);
     }
+
+    &.bottom {
+        top:65%;
+
+        .hours-text {
+            margin-top: 1.3em;
+            >div {
+                display: inline;
+            }
+            .hours{font-size: 1em;}
+            .hr {font-size:0.7em;}
+        }
+    }
 }
 
 .number {

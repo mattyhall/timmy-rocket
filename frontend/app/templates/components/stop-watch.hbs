@@ -17,6 +17,13 @@
         {{/if}}
     </div>
 
+    <div class="stopwatch-small bottom">
+        <div class="hours-text">
+            <div class="hours">{{hours}}</div>
+            <div class="hr">{{#if (eq hours "1")}}hr{{else}}hrs{{/if}}</div>
+        </div>
+    </div>
+
     <div class="marker"></div>
     <div class="marker" style="transform: rotate(30deg);"></div>
     <div class="marker" style="transform: rotate(60deg);"></div>
