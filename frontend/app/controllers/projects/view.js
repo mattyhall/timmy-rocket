@@ -2,7 +2,10 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.Controller.extend({
-    table: Ember.computed('model.activities', function() {
+    // refresh is toggled when we come back from editing activities, so the
+    // changes are reflected in the list. See router.willTransition
+    refresh: true,
+    table: Ember.computed('refresh', 'model.activities', function() {
         var last_day = null;
         var table = [];
         this.get('model.activities').forEach(function(act) {

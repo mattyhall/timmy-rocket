@@ -6,7 +6,6 @@ export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
     serialize: function(record, options) {
         var json = this._super(record, options);
         json.project_id = parseInt(json.project_id);
-        console.dir(json);
         return json;
     }
 });

@@ -5,9 +5,8 @@ export default Ember.Controller.extend({
     isNew: false,
     actions: {
         save() {
-            this.get('model').save().then(function() {
-                history.back();
-            });
+            this.get('model').save()
+                .then(() => history.back());
         },
 
         cancel() {
