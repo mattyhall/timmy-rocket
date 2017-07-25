@@ -115,6 +115,16 @@ fn post_project(conn: DbConn, proj: Json<WrappedProject>) -> Result<Json, Custom
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
+#[get("/activities")]
+fn get_activities(conn: DbConn) -> QueryResult<Json> {
+    use timmy_rocket::schema::activities::dsl::*;
+    activities.load::<Activity>(&*conn).map(|acts| {
+        Json(json!({
+            "activities": acts
+        }))
+    })
+}
+
 fn main() {
     let all_origins = AllowedOrigins::all();
     let options = rocket_cors::Cors {
@@ -130,7 +140,8 @@ fn main() {
         .mount(
             "/",
             routes![get_projects, get_projects_qs, get_project, put_project,
-                    delete_project, post_project],
+                    delete_project, post_project,
+                    get_activities],
         )
         .launch();
 }

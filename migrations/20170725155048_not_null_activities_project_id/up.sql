@@ -1,0 +1,1 @@
+ALTER TABLE activities ALTER COLUMN project_id SET NOT NULL;
