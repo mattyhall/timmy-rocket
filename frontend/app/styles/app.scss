@@ -1,6 +1,11 @@
+$grey: #d5dae6;
+$dark-grey: #687189;
+$blue: #364760;
+$dark-blue: #2a394f;
+
 body {
     margin: 0px;
-    background-color: #d5dae6;
+    background-color: $grey;
     font-family: 'Droid Sans', sans-serif;
 }
 
@@ -22,48 +27,43 @@ body {
     padding-bottom: 0.5em;
     width: 200px;
     min-width: 100px;
-    background-color: #364760;
+    background-color: $blue;
     color: #f0f4f6;
-}
 
-.nav-panel > h1 {
-    margin: 0 0 0 0;
-    padding-left: 1em;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    height: 38px;
-    background-color: #2a394f;
-}
+    > h1 {
+        margin: 0 0 0 0;
+        padding-left: 1em;
+        padding-top: 16px;
+        padding-bottom: 16px;
+        height: 38px;
+        background-color: $dark-blue;
+    }
 
-.nav-panel > ul {
-    margin-top: 2em;
-    list-style: none;
-    padding: 0;
+    > ul {
+        margin-top: 2em;
+        list-style: none;
+        padding: 0;
 
-}
+    }
 
-.nav-panel a {
-    text-align: center;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    margin-bottom: 0.3em;
-    font-weight: bold;
-    text-decoration: none;
-    color: #f0f4f6;
-    display: block;
-    outline: 0;
-}
+    a {
+        text-align: center;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        margin-bottom: 0.3em;
+        font-weight: bold;
+        text-decoration: none;
+        color: #f0f4f6;
+        display: block;
+        outline: 0;
 
-.nav-panel a.active {
-    background-color: #2a394f;
-}
-
-.nav-panel a:hover {
-    background-color: #2a394f;
+        &.active {background-color: $dark-blue;}
+        &:hover {background-color: $dark-blue;}
+    }
 }
 
 .header {
-    background-color: #364760;
+    background-color: $blue;
     color: #f0f4f6;
     width: 100%;
     height: 70px;
@@ -79,43 +79,45 @@ body {
     background-color: #eef1f7;
     padding-top: 1em;
     padding-bottom: 1em;
-}
 
-.title > h2 {
-    margin: 0px;
-    color: #687189;
-    display: inline;
+    > h2 {
+        margin: 0px;
+        color: $dark-grey;
+        display: inline;
+    }
 }
 
 .dashboard {
     display: flex;
     flex-wrap: wrap;
-}
 
-.dashboard-item {
-    padding-left: 1em;
-    color: #8c97b2;
-    margin-bottom: 1em;
-}
+    .dashboard-item {
+        padding-left: 1em;
+        color: #8c97b2;
+        margin-bottom: 1em;
+    }
 
-.dashboard-item-title {
-    color: #687189;
-    background-color: #eef1f7;
-    margin-bottom: 0px;
-    padding: 0.7em 0.2em 0.7em 0.7em;
-}
+    .dashboard-item-title {
+        color: $dark-grey;
+        background-color: #eef1f7;
+        margin-bottom: 0px;
+        padding: 0.7em 0.2em 0.7em 0.7em;
 
-.dashboard-item-title > h3 {
-    display: inline;
-}
+        > h3 {
+            display: inline;
 
-.dashboard-item-title > h3.inactive {
-    font-weight: 500;
-}
+            &.inactive {font-weight: 500;}
+        }
 
-.dashboard-item-title a {
-    text-decoration: underline;
-    color: #687189;
+        a {
+            text-decoration: underline;
+            color: $dark-grey;
+        }
+
+        .action-group {
+            margin-right: 0.3em;
+        }
+    }
 }
 
 .description {
@@ -128,27 +130,21 @@ body {
 
 .action-group {
     display: inline;
-}
 
-.dashboard-item-title .action-group {
-    margin-right: 0.3em;
-}
+    a {
+        text-decoration: none;
+        color: $dark-grey;
+        margin-left: 0.2em;
+        outline: 0;
+    }
 
-.action-group a {
-    text-decoration: none;
-    color: #687189;
-    margin-left: 0.2em;
-    outline: 0;
-}
-
-.action-group > div {
-    display: inline;
+    > div {display: inline;}
 }
 
 .dashboard-item-content {
     margin: 0px;
     background-color: #ffffff;
-    padding: 0.7em 0.2em 0.7em 1.2em
+    padding: 0.7em 1.2em 0.7em 1.2em
 }
 
 .btn {
@@ -156,8 +152,8 @@ body {
     padding: 0.3em 0.5em 0.3em 0.5em;
     min-width: 80px;
     text-align: center;
-    border: 1px solid #687189;
-    color: #687189;
+    border: 1px solid $dark-grey;
+    color: $dark-grey;
     cursor: pointer;
  -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -184,8 +180,8 @@ body {
 }
 
 .grey-btn {
-    color: #687189;
-    border: 1px solid #687189;
+    color: $dark-grey;
+    border: 1px solid $dark-grey;
 }
 
 .red {
@@ -208,12 +204,10 @@ body {
     margin-left: 0.5em;
 }
 
-.toggle-group > div {
-    display: inline;
-}
+.toggle-group {
+    > div {display: inline;}
 
-.toggle-group .btn {
-    margin-right: 0.5em;
+    .btn {margin-right: 0.5em;}
 }
 
 .pane {
@@ -226,35 +220,35 @@ body {
 .input-group {
     margin-top: 1em;
     vertical-align: top;
-}
 
-.input-group > label {
-    display: block;
-    min-width: 150px;
-    font-weight: bold;
-}
+    > label {
+        display: block;
+        min-width: 150px;
+        font-weight: bold;
+    }
 
-.input-group > input {
-    color: #8c97b2;
-    background-color: #ffffff;
-    border: 3px solid #eef1f7;
-    padding: 0.4em 0.5em 0.4em 0.5em;
-}
+    > input {
+        color: #8c97b2;
+        background-color: #ffffff;
+        border: 3px solid #eef1f7;
+        padding: 0.4em 0.5em 0.4em 0.5em;
+    }
 
-.input-group > input[type=text] {
-    width: 100%;
-    box-sizing: border-box;
-}
+    > input[type=text] {
+        width: 100%;
+        box-sizing: border-box;
+    }
 
-.input-group > textarea {
-    width: 100%;
-    box-sizing: border-box;
-    color: #8c97b2;
-    background-color: #ffffff;
-    border: 3px solid #eef1f7;
-    padding: 0.4em 0.5em 0.4em 0.5em;
-    font-family: 'Droid Sans', sans-serif;
-    resize: vertical;
+    > textarea {
+        width: 100%;
+        box-sizing: border-box;
+        color: #8c97b2;
+        background-color: #ffffff;
+        border: 3px solid #eef1f7;
+        padding: 0.4em 0.5em 0.4em 0.5em;
+        font-family: 'Droid Sans', sans-serif;
+        resize: vertical;
+    }
 }
 
 .error-group {
@@ -289,7 +283,7 @@ body {
     margin-bottom: 1em;
     width: 200px;
     height: 200px;
-    border: 5px solid #687189;
+    border: 5px solid $dark-grey;
     position: relative;
 }
 
@@ -297,7 +291,7 @@ body {
     position: absolute;
     width: 10%;
     height: 13%;
-    background-color: #687189;
+    background-color: $dark-grey;
     top: -15%;
     left: 45%;
     transform-origin: 50% 100px;
@@ -307,7 +301,7 @@ body {
     border-radius: 50%;
     margin: 0 auto;
     position: absolute;
-    border: 1px solid #364760;
+    border: 1px solid $blue;
     width: 30%;
     height: 30%;
     top: 5%;
@@ -319,10 +313,10 @@ body {
     font-size: 0.7em;
     left: calc(50% - 0.7em/2);
     transform-origin: 50% 200%;
-}
 
-.number > p {
-    margin: 0;
+    > p {
+        margin: 0;
+    }
 }
 
 .hand {
@@ -331,7 +325,7 @@ body {
 }
 
 .marker {
-    background-color: #687189;
+    background-color: $dark-grey;
     width: 2%;
     height: 3%;
     left: 49%;
@@ -355,7 +349,7 @@ body {
 .second-hand-initial {animation: rotation 0.7s;}
 
 .minute-hand {
-    background-color: #687189;
+    background-color: $dark-grey;
     top: 10%;
     left: 49%;
     width: 2%;
@@ -367,21 +361,21 @@ body {
 @media only screen and (max-device-width : 480px) {
     .nav-panel {
         width: 100%;
-    }
 
-    .nav-panel > ul {
-        margin-top: 0.2em;
-        margin-bottom: 0em;
-    }
+        ul {
+            margin-top: 0.2em;
+            margin-bottom: 0em;
 
-    .nav-panel > ul > li {
-        display: inline-block;
-        margin-bottom: 0;
-    }
+            li {
+                display: inline-block;
+                margin-bottom: 0;
+            }
+        }
 
-    .nav-panel a {
-        padding-left: 1em;
-        padding-right: 1em;
+        a {
+            padding-left: 1em;
+            padding-right: 1em;
+        }
     }
 
     .header {
