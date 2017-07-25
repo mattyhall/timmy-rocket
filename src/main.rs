@@ -54,7 +54,7 @@ fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
     let project: Project = p::projects.find(p_id).first(&*conn)?;
-    let acts: Vec<Activity> = Activity::belonging_to(&project).order(a::start_time.asc()).load::<Activity>(&*conn)?;
+    let acts: Vec<Activity> = Activity::belonging_to(&project).order(a::start_time.desc()).load::<Activity>(&*conn)?;
     Ok(Json(json!({
         "project": {
             "id": project.id,
