@@ -7,8 +7,11 @@
         <div class="number" style="transform: rotate(180deg); left: 40%; top: 15%;"><p style="transform: rotate(-180deg);">30</p></div>
         <div class="number" style="transform: rotate(270deg); left: 33%; top: 5%"><p style="transform: rotate(-270deg);">45</p></div>
 
+        <div class="hand-centre"></div>
+
         {{#if initial}}
-            <div class="hand second-hand second-hand-initial"></div>
+            <div class="hand second-hand second-hand-initial">
+            </div>
         {{else}}
             <div class="hand second-hand" style={{seconds_deg}}></div>
         {{/if}}
@@ -27,8 +30,11 @@
     <div class="marker" style="transform: rotate(300deg);"></div>
     <div class="marker" style="transform: rotate(330deg);"></div>
 
+    <div class="hand-centre"></div>
+
     {{#if initial}}
-        <div class="hand minute-hand minute-hand-initial"></div>
+        <div class="hand minute-hand minute-hand-initial">
+        </div>
     {{else}}
         <div class="hand minute-hand" style={{minutes_deg}}></div>
     {{/if}}

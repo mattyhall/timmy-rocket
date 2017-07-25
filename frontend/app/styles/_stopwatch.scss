@@ -1,3 +1,13 @@
+@mixin centre-part($size, $colour) {
+    position: absolute;
+    border-radius: 50%;
+    width: $size;
+    height: $size;
+    border: 1px solid $colour;
+    background-color: $colour;
+    left: calc(50% - #{$size}/2 - 1px);
+    top: calc(50% - #{$size}/2 - 1px);
+}
 
 .stopwatch {
     border-radius: 50%;
@@ -8,6 +18,10 @@
     height: 200px;
     border: 5px solid $dark-grey;
     position: relative;
+
+    > .hand-centre {
+        @include centre-part(10px, $dark-grey);
+    }
 }
 
 .block {
@@ -29,6 +43,10 @@
     height: 30%;
     top: 5%;
     left: calc(50% - 30%/2 - 0.5px);
+
+    > .hand-centre {
+        @include centre-part(5px, red);
+    }
 }
 
 .number {
