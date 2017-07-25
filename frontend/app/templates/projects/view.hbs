@@ -2,19 +2,34 @@
     <h2>{{model.title}}</h2>
     <div class="subtitle action-group">
         <div class="action-group">
-            {{#link-to "projects.edit" proj.id}}{{fa-icon "pencil"}}{{/link-to}}
-            {{delete-button delete=(action "delete" proj)}}
+            {{#link-to "projects.edit" model.id}}{{fa-icon "pencil"}}{{/link-to}}
+            {{delete-button delete=(action "delete" model)}}
         </div>
     </div>
+    <div class="subtitle">{{model.description}}</div>
 </div>
 
 
 <div class="inner-container">
-    <div class="pane">
-        <p>{{model.description}}</p>
-
-        {{#each model.activities as |act|}}
-            {{act.description}}
-        {{/each}}
+    <div class="dashboard">
+        <div class="dashboard-item full-dashboard-item">
+            <div class="dashboard-item-title"><h3>Activities</h3></div>
+            <div class="dashboard-item-content">
+                <table class="activities">
+                    {{#each table as |row|}}
+                        <tr>
+                            <td>{{row.day}}</td>
+                            <td>{{format-timeperiod row.start row.end}}</td>
+                            <td class="description">{{row.description}}</td>
+                            <td class="time">{{format-timedifference row.start row.end}}</td>
+                            <td class="action-group">
+                                {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
+                                {{delete-button delete=(action "delete_activity" row.model)}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                </table>
+            </div>
+        </div>
     </div>
 </div>

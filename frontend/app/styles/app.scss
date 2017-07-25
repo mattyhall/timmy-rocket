@@ -126,7 +126,7 @@ body {
     margin: 0;
 }
 
-.project-item {
+.full-dashboard-item {
     flex: 0 0 calc(100% - 1em);
 }
 
@@ -202,8 +202,12 @@ body {
 }
 
 .subtitle {
-    margin-top: 1em;
-    margin-left: 0.5em;
+    margin-top: 0.5em;
+    color: $dark-grey;
+
+    .input-group {
+        margin-left: 0.5em;
+    }
 }
 
 .toggle-group {
@@ -220,7 +224,7 @@ body {
 }
 
 .input-group {
-    margin-top: 1em;
+    margin-bottom: 1em;
     vertical-align: top;
 
     > label {
@@ -276,6 +280,10 @@ body {
     min-width: 235px;
     flex: 0 0 75%;
     text-align: center;
+}
+
+.activities {
+    width: 100%;
 }
 
 @import 'stopwatch';
