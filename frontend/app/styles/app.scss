@@ -2,6 +2,8 @@ $grey: #d5dae6;
 $dark-grey: #687189;
 $blue: #364760;
 $dark-blue: #2a394f;
+$red: #d77a80;
+$bright-blue: #2ec6c8;
 
 body {
     margin: 0px;
@@ -174,8 +176,8 @@ body {
 }
 
 .green-btn {
-    background-color: #2ec6c8;
-    border: 1px solid #2ec6c8;
+    background-color: $bright-blue;
+    border: 1px solid $bright-blue;
     color: #fff;
 }
 
@@ -185,12 +187,12 @@ body {
 }
 
 .red {
-    color: #d77a80 !important;
+    color: $red !important;
 }
 
 .red-btn {
-    color: #d77a80;
-    border: 1px solid #d77a80;
+    color: $red;
+    border: 1px solid $red;
 }
 
 .toggled {
