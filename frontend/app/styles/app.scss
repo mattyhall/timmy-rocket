@@ -284,6 +284,10 @@ body {
 
 .activities {
     width: 100%;
+
+    .total {
+        font-weight: bold;
+    }
 }
 
 @import 'stopwatch';

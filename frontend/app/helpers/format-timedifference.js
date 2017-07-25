@@ -1,9 +1,7 @@
 import Ember from 'ember';
 
-export function formatTimedifference([start, end]/*, hash*/) {
-    let duration = moment(end) - moment(start),
-        diff = moment.utc(moment.duration(duration).asMilliseconds()),
-        h = diff.format('H'),
+export function formatTimedifference([diff]/*, hash*/) {
+    let h = diff.format('H'),
         m = diff.format('m'),
         s = diff.format('s');
     var hrs = '',

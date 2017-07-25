@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import moment from 'moment';
+import {formatTimedifference} from 'frontend/helpers/format-timedifference';
 
 export default Ember.Controller.extend({
     // refresh is toggled when we come back from editing activities, so the
@@ -7,24 +8,41 @@ export default Ember.Controller.extend({
     refresh: true,
     table: Ember.computed('refresh', 'model.activities', function() {
         var last_day = null;
+        var first = true;
         var table = [];
+        var total = 0;
         this.get('model.activities').forEach(function(act) {
             let s = moment(act.get('start_time')),
-                e = moment(act.get('end_time'));
+                e = moment(act.get('end_time')),
+                duration = moment(e) - moment(s),
+                milli = moment.duration(duration).asMilliseconds(),
+                diff = moment.utc(milli);
             var row = {
-                day: s.format('ddd DD MMMM'),
-                description: act.get('description'),
                 start: s,
                 end: e,
-                model: act
+                day: s.format('ddd DD MMMM'),
+                description: act.get('description'),
+                diff: diff,
+                model: act,
+                type: 'normal'
             };
-            let day = moment(act.get('start_time')).format('LL');
+            let day = s.format('LL');
+            total += milli;
             if (day == last_day) {
                 row.day = "";
+            } else if (!first) {
+                let total_diff = moment.utc(total);
+                let text = formatTimedifference([total_diff]);
+                table.push({type: 'total', time: text});
+                total = 0;
             }
             last_day = day;
             table.push(row);
+            first = false;
         });
+        let total_diff = moment.utc(total);
+        let text = formatTimedifference([total_diff]);
+        table.push({type: 'total', time: text});
         return table;
     }),
 

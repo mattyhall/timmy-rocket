@@ -18,14 +18,22 @@
                 <table class="activities">
                     {{#each table as |row|}}
                         <tr>
-                            <td>{{row.day}}</td>
-                            <td>{{format-timeperiod row.start row.end}}</td>
-                            <td class="description">{{row.description}}</td>
-                            <td class="time">{{format-timedifference row.start row.end}}</td>
-                            <td class="action-group">
-                                {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
-                                {{delete-button delete=(action "delete_activity" row.model)}}
-                            </td>
+                            {{#if (eq row.type "normal")}}
+                                <td>{{row.day}}</td>
+                                <td>{{format-timeperiod row.start row.end}}</td>
+                                <td class="description">{{row.description}}</td>
+                                <td class="time">{{format-timedifference row.diff}}</td>
+                                <td class="action-group">
+                                    {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
+                                    {{delete-button delete=(action "delete_activity" row.model)}}
+                                </td>
+                            {{else}}
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="total">{{row.time}}</td>
+                                <td></td>
+                            {{/if}}
                         </tr>
                     {{/each}}
                 </table>
