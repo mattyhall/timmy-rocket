@@ -5,17 +5,9 @@
 
 <div class="inner-container">
     <div class="pane">
-        <div class="input-group">
-            <label>Title</label>
-            {{input type="text" value=model.title}}
-            <ul class="error-group">
-                {{#each errors.title as |error|}}
-                    <li class="error">
-                        {{fa-icon "exclamation-triangle"}}
-                        {{error}}</li>
-                {{/each}}
-            </ul>
-        </div>
+        {{#validated-input show=showErrors label="Title" value=model.title validation=model.validations.attrs.title as |act| }}
+            {{input type="text" value=model.title input=act}}
+        {{/validated-input}}
         <div class="input-group">
             <label>Description</label>
             {{textarea rows=3 value=model.description}}

@@ -82,14 +82,6 @@ struct WrappedProject {
 fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl::*;
     let proj = proj.0.project;
-    if proj.title.trim().len() == 0 {
-        return Err(Custom(
-            Status::UnprocessableEntity,
-            Json(json!({"errors": [
-                {"detail": "A project must have a title",
-                 "source": {"pointer": "data/attributes/title"}}]})),
-        ));
-    }
     diesel::update(projects.filter(id.eq(p_id)))
         .set((
             title.eq(proj.title),
@@ -119,14 +111,6 @@ fn delete_project(conn: DbConn, p_id: i32) -> Result<Json, Custom<Json>> {
 fn post_project(conn: DbConn, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects;
     let proj = proj.0.project;
-    if proj.title.trim().len() == 0 {
-        return Err(Custom(
-            Status::UnprocessableEntity,
-            Json(json!({"errors": [
-                {"detail": "A project must have a title",
-                 "source": {"pointer": "data/attributes/title"}}]})),
-        ));
-    }
     diesel::insert(&proj)
         .into(projects::table)
         .get_result::<Project>(&*conn)

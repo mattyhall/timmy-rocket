@@ -1,0 +1,16 @@
+<div class="input-group">
+    <label>{{label}}</label>
+
+    {{yield (action "change")}}
+
+    {{#if shouldShow}}
+        <ul class="error-group">
+            {{#each validation.errors as |error|}}
+                <li class="error">
+                    {{fa-icon "exclamation-triangle"}}
+                    {{error.message}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
+
+</div>
