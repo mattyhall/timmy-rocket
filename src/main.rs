@@ -103,11 +103,16 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Js
 
 #[delete("/projects/<p_id>")]
 fn delete_project(conn: DbConn, p_id: i32) -> Result<Json, Custom<Json>> {
-    use timmy_rocket::schema::projects::dsl::*;
-    diesel::delete(projects.filter(id.eq(p_id)))
+    use timmy_rocket::schema::projects::dsl as p;
+    use timmy_rocket::schema::activities::dsl as a;
+    diesel::delete(a::activities.filter(a::project_id.eq(p_id)))
+        .execute(&*conn)
+        .map_err(|err| {println!("{:?}", err); return Custom(Status::UnprocessableEntity, Json(json!({})));})?;
+
+    diesel::delete(p::projects.filter(p::id.eq(p_id)))
         .execute(&*conn)
         .map(|_| Json(json!({})))
-        .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
+        .map_err(|err| {println!("{:?}", err); return Custom(Status::UnprocessableEntity, Json(json!({})));})
 }
 
 #[post("/projects", data = "<proj>")]
