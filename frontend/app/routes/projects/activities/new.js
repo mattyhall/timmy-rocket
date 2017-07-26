@@ -7,7 +7,8 @@ export default Ember.Route.extend({
 
     setupController: function(controller, model, transition) {
         let params = transition.queryParams;
-        this.controllerFor('projects.activities.edit').setProperties({isNew: true, model: model, showProjects: params.showProjects});
+        let showProjects = params.showProjects == 'true';
+        this.controllerFor('projects.activities.edit').setProperties({isNew: true, model: model, showProjects: showProjects});
     },
 
     renderTemplate: function() {

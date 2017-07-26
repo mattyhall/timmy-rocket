@@ -72,11 +72,13 @@ export default Ember.Controller.extend({
 
         create_activity() {
             let proj = this.get('model');
-            this.transitionToRoute('projects.activities.new')
-                .then((route) => {
-                    route.currentModel.set('project', proj);
-                    route.controller.set('showProjects', false);
-                });
+            this.transitionToRoute('projects.activities.new', {queryParams: {
+                showProjects: false,
+                start_time: '',
+                end_time: ''
+            }}).then((route) => {
+                route.currentModel.set('project', proj);
+            });
         }
     }
 });
