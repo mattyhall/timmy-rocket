@@ -1,12 +1,17 @@
 import Ember from 'ember';
 
 export function formatTimedifference([diff]/*, hash*/) {
-    let h = diff.format('H'),
+    let d = diff.format('D'),
+        h = diff.format('H'),
         m = diff.format('m'),
         s = diff.format('s');
-    var hrs = '',
+    var days = '',
+        hrs = '',
         mins = '',
         secs = '';
+    if (d !== '1') {
+        h = parseInt(h) + (parseInt(d)-1) * 24;
+    }
     if (h !== '0') {
         hrs = h;
         if (h === '1') {

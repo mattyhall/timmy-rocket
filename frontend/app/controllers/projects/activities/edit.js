@@ -14,13 +14,15 @@ export default Ember.Controller.extend({
 
     actions: {
         save() {
-            var proj_id = this.get('proj_id');
-            this.get('projects').forEach((proj) => {
-                if (proj.id == proj_id) {
-                    this.set('model.project', proj);
-                    return false;
-                }
-            });
+            if (this.get('showProjects')) {
+                var proj_id = this.get('proj_id');
+                this.get('projects').forEach((proj) => {
+                    if (proj.id == proj_id) {
+                        this.set('model.project', proj);
+                        return false;
+                    }
+                });
+            }
             this.get('model').save()
                 .then(() => history.back());
         },

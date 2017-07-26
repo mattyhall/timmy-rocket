@@ -6,6 +6,16 @@ export default Ember.Controller.extend({
     // refresh is toggled when we come back from editing activities, so the
     // changes are reflected in the list. See router.willTransition
     refresh: true,
+
+    hours_total: Ember.computed('refresh', 'model.activities', function() {
+        let total = 0;
+        this.get('model.activities').forEach((act) => {
+            let duration = moment(act.get('end_time')) - moment(act.get('start_time'));
+            total += moment.duration(duration);
+        });
+        return moment.utc(total);
+    }),
+
     table: Ember.computed('refresh', 'model.activities', function() {
         var last_day = null;
         var first = true;
