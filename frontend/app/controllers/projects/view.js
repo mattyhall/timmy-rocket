@@ -32,10 +32,11 @@ export default Ember.Controller.extend({
             if (day == last_day) {
                 row.day = "";
             } else if (!first) {
+                total -= milli;
                 let total_diff = moment.utc(total);
                 let text = formatTimedifference([total_diff]);
                 table.push({type: 'total', time: text});
-                total = 0;
+                total = milli;
             }
             last_day = day;
             table.push(row);
