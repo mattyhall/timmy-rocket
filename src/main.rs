@@ -164,6 +164,17 @@ fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>) -> Result<J
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
+#[post("/activities", data = "<act>")]
+fn post_activity(conn: DbConn, act: Json<WrappedActivity>) -> Result<Json, Custom<Json>> {
+    use timmy_rocket::schema::activities;
+    let act = act.0.activity;
+    diesel::insert(&act)
+        .into(activities::table)
+        .get_result::<Activity>(&*conn)
+        .map(|act| Json(json!({"activity": act})))
+        .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
+}
+
 fn main() {
     let all_origins = AllowedOrigins::all();
     let options = rocket_cors::Cors {
@@ -180,7 +191,7 @@ fn main() {
             "/",
             routes![get_projects, get_projects_qs, get_project, put_project,
                     delete_project, post_project,
-                    get_activities, get_activity, put_activity],
+                    get_activities, get_activity, put_activity, post_activity],
         )
         .launch();
 }

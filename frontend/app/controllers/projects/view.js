@@ -57,6 +57,14 @@ export default Ember.Controller.extend({
         },
 
         delete_activity(model) {
+        },
+
+        create_activity() {
+            let proj = this.get('model');
+            this.transitionToRoute('projects.activities.new')
+                .then((route) => {
+                    route.currentModel.set('project', proj);
+                });
         }
     }
 });
