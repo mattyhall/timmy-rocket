@@ -14,7 +14,9 @@ export default Ember.Route.extend({
     actions: {
         willTransition() {
             let model = this.controllerFor('projects.edit').get('model');
-            model.deleteRecord();
+            if (model.get('isNew')) {
+                model.deleteRecord();
+            }
         }
     }
 });
