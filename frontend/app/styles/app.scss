@@ -255,6 +255,13 @@ body {
         font-family: 'Droid Sans', sans-serif;
         resize: vertical;
     }
+
+    > select {
+        color: #8c97b2;
+        background-color: #ffffff;
+        border: 3px solid #eef1f7;
+        padding: 0.4em 0.5em 0.4em 0.5em;
+    }
 }
 
 .error-group {
