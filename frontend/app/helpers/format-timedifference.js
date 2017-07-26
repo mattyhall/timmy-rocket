@@ -23,6 +23,14 @@ export function formatTimedifference([diff]/*, hash*/) {
             mins += 'mins ';
         }
     }
+    if (h == '0' && m == '0') {
+        secs = s;
+        if (s === '1') {
+            secs += 'sec ';
+        } else {
+            secs += 'secs ';
+        }
+    }
 
   return hrs + mins + secs;
 }
