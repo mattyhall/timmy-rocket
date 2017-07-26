@@ -34,6 +34,11 @@
             </ul>
         </div>
 
+        <div class="input-group">
+            <label>Tags</label>
+            {{tags-field tags=model.tags}}
+        </div>
+
         <span id="save-btn" class="btn green-btn" {{action "save" onclick}}>Save</span>
         <span class="btn grey-btn" {{action "cancel" onclick}}>Cancel</span>
     </div>

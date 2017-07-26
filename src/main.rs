@@ -157,6 +157,7 @@ fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>) -> Result<J
             description.eq(act.description),
             start_time.eq(act.start_time),
             end_time.eq(act.end_time),
+            tags.eq(act.tags),
         ))
         .execute(&*conn)
         .map(|_| Json(json!({})))
