@@ -24,7 +24,8 @@ export default Ember.Controller.extend({
                 description: act.get('description'),
                 diff: diff,
                 model: act,
-                type: 'normal'
+                type: 'normal',
+                tags: act.get('tags').join(', ')
             };
             let day = s.format('LL');
             total += milli;

@@ -285,9 +285,16 @@ body {
 .activities {
     width: 100%;
 
+    td {
+        vertical-align: top;
+    }
+
     .total {
         font-weight: bold;
+        padding-bottom: 0.8em;
     }
+
+    .tags {font-size: 0.9em;}
 }
 
 @import 'stopwatch';

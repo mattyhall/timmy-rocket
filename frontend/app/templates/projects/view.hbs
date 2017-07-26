@@ -21,7 +21,10 @@
                             {{#if (eq row.type "normal")}}
                                 <td>{{row.day}}</td>
                                 <td>{{format-timeperiod row.start row.end}}</td>
-                                <td class="description">{{row.description}}</td>
+                                <td class="description">
+                                    {{row.description}}
+                                    <div class="tags">{{fa-icon "tags"}} {{row.tags}}</div>
+                                </td>
                                 <td class="time">{{format-timedifference row.diff}}</td>
                                 <td class="action-group">
                                     {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
