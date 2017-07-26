@@ -1,14 +1,28 @@
 export default Ember.Route.extend({
-    setupController: function(controller, model) {
-        this.controllerFor('projects.activities.edit').setProperties({isNew: true, model: model});
+    queryParams: {
+        start_time: '',
+        end_time: '',
+        showProjects: false,
+    },
+
+    setupController: function(controller, model, transition) {
+        let params = transition.queryParams;
+        this.controllerFor('projects.activities.edit').setProperties({isNew: true, model: model, showProjects: params.showProjects});
     },
 
     renderTemplate: function() {
         this.render('projects/activities/edit');
     },
 
-    model() {
-        return this.get('store').createRecord('activity', {tags: []});
+    model(params) {
+        let data = {tags: []};
+        if ("start_time" in params) {
+            data.start_time = params.start_time;
+        }
+        if ("end_time" in params) {
+            data.end_time = params.end_time;
+        }
+        return this.get('store').createRecord('activity', data);
     },
 
     actions: {

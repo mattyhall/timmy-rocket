@@ -58,6 +58,16 @@ export default Ember.Controller.extend({
             this.set('end_time', moment.now());
         },
 
+        record() {
+            let s = moment(this.get('start_time')).format('YYYY-MM-DDTHH:mm:ss');
+            let e = moment(this.get('end_time')).format('YYYY-MM-DDTHH:mm:ss');
+            this.transitionToRoute('projects.activities.new', {queryParams: {
+                start_time: s,
+                end_time: e,
+                showProjects: true
+            }});
+        },
+
         restart() {
             this.set('state', 'initial');
             this.set('start_time', null);

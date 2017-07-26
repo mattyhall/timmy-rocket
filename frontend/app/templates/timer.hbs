@@ -17,7 +17,7 @@
                 {{else if (eq state "timing")}}
                         <span class="btn green-btn" {{action "stop"}}>Stop</span>
                 {{else if (eq state "stopped")}}
-                        <span class="btn green-btn">Record</span>
+                        <span class="btn green-btn" {{action "record"}}>Record</span>
                         <span class="btn red-btn" {{action "restart"}}>Cancel</span>
                 {{/if}}
             </div>

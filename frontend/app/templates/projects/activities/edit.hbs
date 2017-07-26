@@ -5,10 +5,22 @@
 
 <div class="inner-container">
     <div class="pane">
+        {{#if showProjects}}
+            <div class="input-group">
+                <label>Project</label>
+                <select onchange={{action (mut proj_id) value="target.value"}}>
+                    {{#each projects as |project|}}
+                        <option value={{project.id}} selected={{eq project_id project.id}}>{{project.title}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        {{/if}}
+
         <div class="input-group">
             <label>Description</label>
             {{input type="text" value=model.description}}
         </div>
+
         <div class="input-group">
             <label>Start time</label>
             {{datetime-field date=model.start_time}}
@@ -21,6 +33,7 @@
                 {{/each}}
             </ul>
         </div>
+
         <div class="input-group">
             <label>End time</label>
             {{datetime-field date=model.end_time}}

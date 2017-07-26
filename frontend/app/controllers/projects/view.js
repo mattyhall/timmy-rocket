@@ -65,6 +65,7 @@ export default Ember.Controller.extend({
             this.transitionToRoute('projects.activities.new')
                 .then((route) => {
                     route.currentModel.set('project', proj);
+                    route.controller.set('showProjects', false);
                 });
         }
     }
