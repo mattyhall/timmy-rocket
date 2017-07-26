@@ -49,8 +49,7 @@ fn get_projects_qs(conn: DbConn, qs: ProjectsQS) -> QueryResult<Json> {
     })
 }
 
-#[get("/projects/<p_id>")]
-fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
+fn gp(conn: DbConn, p_id: i32) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
     let project: Project = p::projects.find(p_id).first(&*conn)?;
@@ -66,6 +65,11 @@ fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
             "activities": acts,
         }
     })))
+}
+
+#[get("/projects/<p_id>")]
+fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
+    gp(conn, p_id)
 }
 
 #[derive(Deserialize)]
@@ -92,8 +96,8 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Js
             description.eq(proj.description),
             active.eq(proj.active),
         ))
-        .execute(&*conn)
-        .map(|_| Json(json!({})))
+        .get_result::<Project>(&*conn)
+        .and_then(|proj| gp(conn, proj.id))
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
@@ -121,7 +125,7 @@ fn post_project(conn: DbConn, proj: Json<WrappedProject>) -> Result<Json, Custom
     diesel::insert(&proj)
         .into(projects::table)
         .get_result::<Project>(&*conn)
-        .map(|proj| Json(json!({"project": proj})))
+        .and_then(|proj| gp(conn, proj.id))
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
