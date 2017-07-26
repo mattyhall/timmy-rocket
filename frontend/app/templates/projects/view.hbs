@@ -12,7 +12,7 @@
 
 <div class="inner-container">
     <div class="dashboard">
-        <div class="dashboard-item" style="width: 33%">
+        <div class="dashboard-item" style="width: calc(50% - 1em);">
             <div class="dashboard-item-title">
                 <h3>Hours in total</h3>
             </div>
@@ -20,6 +20,16 @@
                 {{format-timedifference hours_total}}
             </div>
         </div>
+
+        <div class="dashboard-item" style="width: calc(50% - 1em);">
+            <div class="dashboard-item-title">
+                <h3>Hours this week</h3>
+            </div>
+            <div class="dashboard-item-content">
+                {{format-timedifference this_week_hours_total}}
+            </div>
+        </div>
+
         <div class="dashboard-item full-dashboard-item">
             <div class="dashboard-item-title">
                 <h3>Activities</h3>

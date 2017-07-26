@@ -7,13 +7,27 @@ export default Ember.Controller.extend({
     // changes are reflected in the list. See router.willTransition
     refresh: true,
 
-    hours_total: Ember.computed('refresh', 'model.activities', function() {
+    count_time(activities) {
         let total = 0;
-        this.get('model.activities').forEach((act) => {
+        activities.forEach((act) => {
             let duration = moment(act.get('end_time')) - moment(act.get('start_time'));
             total += moment.duration(duration);
         });
         return moment.utc(total);
+    },
+
+    hours_total: Ember.computed('refresh', 'model.activities', function() {
+        return this.count_time(this.get('model.activities'));
+    }),
+
+    this_week_hours_total: Ember.computed('refresh', 'model.activities', function() {
+        let start_of_week = moment().startOf('isoweek');
+        let end_of_week = moment().endOf('isoweek');
+        let activities = this.get('model.activities').filter((act) => {
+            let s = moment(act.get('start_time'));
+            return s.isAfter(start_of_week) && s.isBefore(end_of_week);
+        });
+        return this.count_time(activities);
     }),
 
     table: Ember.computed('refresh', 'model.activities', function() {
