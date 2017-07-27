@@ -9,94 +9,18 @@
     <div class="subtitle">{{model.description}}</div>
 </div>
 
+<div class="tabbed">
+    <div class="tabs-container">
+        <div class="tabs">
+            {{#link-to "projects.view.index" class="tab"}}Info{{/link-to}}
+            {{#link-to "projects.view.charts" model.id class="tab"}}Charts{{/link-to}}
+        </div>
+    </div>
 
-<div class="inner-container">
-    <div class="dashboard">
-        <div class="dashboard-item half">
-            <div class="dashboard-item-title">
-                <h3>Hours in total</h3>
-            </div>
-            <div class="dashboard-item-content">
-                {{format-timedifference hours_total}}
-            </div>
+    <div class="tabbed-content">
+        <div class="inner-container">
+            {{outlet}}
         </div>
 
-        <div class="dashboard-item half half-right">
-            <div class="dashboard-item-title">
-                <h3>Hours this week</h3>
-            </div>
-            <div class="dashboard-item-content">
-                {{format-timedifference this_week_hours_total}}
-            </div>
-        </div>
-
-        <div class="dashboard-item half full-mobile">
-            <div class="dashboard-item-title">
-                <h3>Tags</h3>
-            </div>
-            <div class="dashboard-item-content">
-                <div class="chart-container">
-                    {{ember-chart type='bar' data=tags options=options}}
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-item half half-right full-mobile">
-            <div class="dashboard-item-title">
-                <h3>Days</h3>
-            </div>
-            <div class="dashboard-item-content">
-                <div class="chart-container">
-                    {{ember-chart type='bar' data=days options=options}}
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-item full">
-            <div class="dashboard-item-title">
-                <h3>Hours</h3>
-            </div>
-            <div class="dashboard-item-content">
-                <div class="chart-container">
-                    {{ember-chart type='bar' data=hours options=options}}
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-item full">
-            <div class="dashboard-item-title">
-                <h3>Activities</h3>
-                <div class="action-group">
-                    <a href="#" {{action "create_activity"}}>{{fa-icon "plus"}}</a>
-                </div>
-            </div>
-            <div class="dashboard-item-content">
-                <table class="activities">
-                    {{#each table as |row|}}
-                        <tr>
-                            {{#if (eq row.type "normal")}}
-                                <td>{{row.day}}</td>
-                                <td>{{format-timeperiod row.start row.end}}</td>
-                                <td class="description">
-                                    {{row.description}}
-                                    <div class="tags">{{fa-icon "tags"}} {{row.tags}}</div>
-                                </td>
-                                <td class="time">{{format-timedifference row.diff}}</td>
-                                <td class="action-group">
-                                    {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
-                                    {{delete-button delete=(action "delete_activity" row.model)}}
-                                </td>
-                            {{else}}
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td class="total">{{row.time}}</td>
-                                <td></td>
-                            {{/if}}
-                        </tr>
-                    {{/each}}
-                </table>
-            </div>
-        </div>
     </div>
 </div>

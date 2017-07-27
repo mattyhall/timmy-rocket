@@ -17,7 +17,7 @@ body {
     flex-wrap: nowrap;
     -webkit-flex-direction: row;
    flex-direction: row;
-   min-height: 98vh;
+   min-height: 100vh;
 }
 
 .main-content {
@@ -313,6 +313,43 @@ body {
 
     &.half-right {
         padding-right: 0;
+    }
+}
+
+.tabbed {
+    background-color: #eef1f7;
+
+    .tabs {
+        margin: auto;
+        width: 200px;
+
+        .tab {
+            font-weight: bold;
+            display: inline-block;
+            padding: 0.5em 0.5em 0.5em 0.5em;
+            text-decoration: none;
+            color: $dark-grey;
+            border: 1px solid transparent;
+            border-bottom: 0px;
+
+            &.active {
+                border: 1px solid $dark-grey;
+                border-bottom: 0px;
+            }
+        }
+    }
+
+    .tabbed-content {
+        height: 100%;
+        margin-top: 0px;
+        margin-left: 1em;
+        margin-right: 1em;
+        background-color: $grey;
+
+        .inner-container {
+            margin-top: 0;
+            padding-top: 1em;
+        }
     }
 }
 

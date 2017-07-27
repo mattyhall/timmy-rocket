@@ -1,0 +1,55 @@
+<div class="dashboard">
+    <div class="dashboard-item half">
+        <div class="dashboard-item-title">
+            <h3>Hours in total</h3>
+        </div>
+        <div class="dashboard-item-content">
+            {{format-timedifference hours_total}}
+        </div>
+    </div>
+
+    <div class="dashboard-item half half-right">
+        <div class="dashboard-item-title">
+            <h3>Hours this week</h3>
+        </div>
+        <div class="dashboard-item-content">
+            {{format-timedifference this_week_hours_total}}
+        </div>
+    </div>
+
+    <div class="dashboard-item full">
+        <div class="dashboard-item-title">
+            <h3>Activities</h3>
+            <div class="action-group">
+                <a href="#" {{action "create_activity"}}>{{fa-icon "plus"}}</a>
+            </div>
+        </div>
+        <div class="dashboard-item-content">
+            <table class="activities">
+                {{#each table as |row|}}
+                    <tr>
+                        {{#if (eq row.type "normal")}}
+                            <td>{{row.day}}</td>
+                            <td>{{format-timeperiod row.start row.end}}</td>
+                            <td class="description">
+                                {{row.description}}
+                                <div class="tags">{{fa-icon "tags"}} {{row.tags}}</div>
+                            </td>
+                            <td class="time">{{format-timedifference row.diff}}</td>
+                            <td class="action-group">
+                                {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
+                                {{delete-button delete=(action "delete_activity" row.model)}}
+                            </td>
+                        {{else}}
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="total">{{row.time}}</td>
+                            <td></td>
+                        {{/if}}
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>
