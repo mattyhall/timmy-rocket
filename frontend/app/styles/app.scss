@@ -303,6 +303,11 @@ body {
     .tags {font-size: 0.9em;}
 }
 
+.chart-container {
+    position: relative;
+    width: 99%;
+}
+
 @import 'stopwatch';
 
 @media only screen and (max-device-width : 480px) {
