@@ -10,7 +10,7 @@
 <div class="inner-container">
     <div class="dashboard">
         {{#each data as |proj|}}
-            <div class="dashboard-item full-dashboard-item">
+            <div class="dashboard-item full">
                 <div class="dashboard-item-title">
                     <h3 class="{{unless proj.active "inactive"}}">{{#link-to "projects.view" proj.id}}{{proj.title}}{{/link-to}}</h3>
                     <div class="action-group">
