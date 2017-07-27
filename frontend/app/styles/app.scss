@@ -308,6 +308,10 @@ body {
     width: 99%;
 }
 
+.half {
+    flex: 0 0 calc(50% - 1em);
+}
+
 @import 'stopwatch';
 
 @media only screen and (max-device-width : 480px) {
