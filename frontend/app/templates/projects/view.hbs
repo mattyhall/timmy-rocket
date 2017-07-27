@@ -32,6 +32,17 @@
 
         <div class="dashboard-item full-dashboard-item">
             <div class="dashboard-item-title">
+                <h3>Tags</h3>
+            </div>
+            <div class="dashboard-item-content">
+                <div class="chart-container" style="position: relative; width:98%">
+                    {{ember-chart type='bar' data=tags options=options}}
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-item full-dashboard-item">
+            <div class="dashboard-item-title">
                 <h3>Activities</h3>
                 <div class="action-group">
                     <a href="#" {{action "create_activity"}}>{{fa-icon "plus"}}</a>

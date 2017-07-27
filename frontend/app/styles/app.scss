@@ -14,21 +14,20 @@ body {
 .container {
     display: -webkit-flex;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     -webkit-flex-direction: row;
    flex-direction: row;
    min-height: 98vh;
 }
 
 .main-content {
-    flex: 1 ;
+    flex: 1;
 }
 
 .nav-panel {
     margin: 0;
     padding-bottom: 0.5em;
-    width: 200px;
-    min-width: 100px;
+    flex: 0 0 200px;
     background-color: $blue;
     color: #f0f4f6;
 
@@ -307,8 +306,15 @@ body {
 @import 'stopwatch';
 
 @media only screen and (max-device-width : 480px) {
+    .container {
+        flex-wrap: wrap;
+    }
+
+    .main-content {
+    }
+
     .nav-panel {
-        width: 100%;
+        flex: 0 0 100%;
 
         ul {
             margin-top: 0.2em;

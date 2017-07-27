@@ -30,6 +30,22 @@ export default Ember.Controller.extend({
         return this.count_time(activities);
     }),
 
+    tags: {
+        labels: ['frontend', 'backend'],
+        datasets: [{data: [10, 20], backgroundColor: ['green', 'blue']}]
+    },
+
+    options: {
+        legend: { display: false },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    },
+
     table: Ember.computed('refresh', 'model.activities', function() {
         var last_day = null;
         var first = true;
