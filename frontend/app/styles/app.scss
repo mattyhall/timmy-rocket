@@ -341,6 +341,10 @@ body {
         }
     }
 
+    .full-mobile {
+        flex: 0 0 calc(100% - 1em) !important;
+    }
+
     .header {
         display: none;
     }
