@@ -121,6 +121,7 @@ body {
     }
 }
 
+
 .description {
     margin: 0;
 }
@@ -296,10 +297,14 @@ body {
 
     .total {
         font-weight: bold;
-        padding-bottom: 0.8em;
+        padding-bottom: 1.2em;
     }
 
     .tags {font-size: 0.9em;}
+
+    th {
+        text-align: left;
+    }
 }
 
 .chart-container {

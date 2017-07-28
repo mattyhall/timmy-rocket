@@ -32,8 +32,8 @@ export default Ember.Controller.extend({
 
     table: Ember.computed('refresh', 'model.activities', function() {
         var last_day = null;
-        var first = true;
         var table = [];
+        var day_record = {rows: []};
         var total = 0;
         this.get('model.activities').forEach(function(act) {
             let s = moment(act.get('start_time')),
@@ -44,31 +44,32 @@ export default Ember.Controller.extend({
             var row = {
                 start: s,
                 end: e,
-                day: s.format('ddd DD MMMM'),
                 description: act.get('description'),
                 diff: diff,
                 model: act,
-                type: 'normal',
                 tags: act.get('tags').join(', ')
             };
             let day = s.format('LL');
             total += milli;
-            if (day == last_day) {
-                row.day = "";
-            } else if (!first) {
+            if (day == last_day || last_day === null) {
+                day_record.rows.push(row);
+                day_record.day = day;
+            } else {
                 total -= milli;
                 let total_diff = moment.utc(total);
                 let text = formatTimedifference([total_diff]);
-                table.push({type: 'total', time: text});
+                day_record.total = text;
+                table.push(day_record);
+                day_record = {rows: []};
+                day_record.rows.push(row);
                 total = milli;
             }
             last_day = day;
-            table.push(row);
-            first = false;
         });
         let total_diff = moment.utc(total);
         let text = formatTimedifference([total_diff]);
-        table.push({type: 'total', time: text});
+        day_record.total = text;
+        table.push(day_record);
         return table;
     }),
 

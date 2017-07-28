@@ -26,29 +26,28 @@
         </div>
         <div class="dashboard-item-content">
             <table class="activities">
-                {{#each table as |row|}}
+            {{#each table as |day|}}
+                <tr><th>{{day.day}}</th></tr>
+                {{#each day.rows as |row|}}
                     <tr>
-                        {{#if (eq row.type "normal")}}
-                            <td>{{row.day}}</td>
-                            <td>{{format-timeperiod row.start row.end}}</td>
-                            <td class="description">
-                                {{row.description}}
-                                <div class="tags">{{fa-icon "tags"}} {{row.tags}}</div>
-                            </td>
-                            <td class="time">{{format-timedifference row.diff}}</td>
-                            <td class="action-group">
-                                {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
-                                {{delete-button delete=(action "delete_activity" row.model)}}
-                            </td>
-                        {{else}}
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="total">{{row.time}}</td>
-                            <td></td>
-                        {{/if}}
+                        <td>{{format-timeperiod row.start row.end}}</td>
+                        <td class="description">
+                            {{row.description}}
+                            <div class="tags">{{fa-icon "tags"}} {{row.tags}}</div>
+                        </td>
+                        <td>{{format-timedifference row.diff}}</td>
+                        <td class="action-group">
+                            {{#link-to "projects.activities.edit" row.model.id}}{{fa-icon "pencil"}}{{/link-to}}
+                            {{delete-button delete=(action "delete_activity" row.model)}}
+                        </td>
                     </tr>
                 {{/each}}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td class="total">{{day.total}}</td>
+                </tr>
+            {{/each}}
             </table>
         </div>
     </div>
