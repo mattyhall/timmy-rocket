@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-    classNames: ['graph-container'],
+    classNames: ['chart-container'],
 
     tags: Ember.computed('activities.@each.{readFlag}', function() {
         var labels = [],
