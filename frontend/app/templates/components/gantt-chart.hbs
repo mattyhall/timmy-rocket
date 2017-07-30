@@ -1,2 +1,10 @@
-{{ember-chart type='line' data=gantt options=gantt_options}}
+<div class="action-group">
+    <a href="#" {{action "change" -1}}>{{fa-icon "chevron-left"}}</a>
+    Week commencing {{start_date}}
+    <a href="#" {{action "change" 1}}>{{fa-icon "chevron-right"}}</a>
+</div>
+
+<div class="gantt chart-container">
+    {{ember-chart type='line' data=gantt options=gantt_options}}
+</div>
 {{yield}}

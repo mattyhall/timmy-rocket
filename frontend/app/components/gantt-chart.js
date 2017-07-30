@@ -1,11 +1,16 @@
 import Ember from 'ember';
+import moment from 'moment';
 
 export default Ember.Component.extend({
-    classNames: ['chart-container', 'gantt'],
+    refresh: false,
+    start: moment().startOf('isoweek'),
+    start_date: Ember.computed('start', 'refresh', function() {
+        return this.get('start').format('DD MMM YYYY');
+    }),
 
-    gantt: Ember.computed('activities.@each.{readFlag}', function() {
-        let start_of_week = moment().startOf('isoweek');
-        let end_of_week = moment().endOf('isoweek');
+    gantt: Ember.computed('start', 'refresh', 'activities.@each.{readFlag}', function() {
+        let start_of_week = this.get('start');
+        let end_of_week = start_of_week.clone().endOf('isoweek');
         let data = [];
         let f = (s, e) => {
             let d = s.day();
@@ -76,5 +81,12 @@ export default Ember.Component.extend({
             }]
         },
         maintainAspectRatio: false
+    },
+
+    actions: {
+        change(amnt) {
+            this.set('start', this.get('start').add(amnt, 'week'));
+            this.set('refresh', !this.get('refresh'));
+        }
     }
 });
