@@ -31,9 +31,7 @@
             <h3>Hours</h3>
         </div>
         <div class="dashboard-item-content">
-            <div class="chart-container">
-                {{ember-chart type='bar' data=hours options=options}}
-            </div>
+            {{hours-chart activities=model.activities}}
         </div>
     </div>
 </div>
