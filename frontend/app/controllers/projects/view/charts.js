@@ -29,6 +29,7 @@ export default Ember.Controller.extend({
         });
         var data = counts.map((n) => n / 1000 / 60 / 60),
             colours = labels.map((_) => '#5ab0ee');
+        labels = labels.map((tag) => tag.split(' '));
         return {
             labels: labels,
             datasets: [{
