@@ -13,9 +13,7 @@
             <h3>Tags</h3>
         </div>
         <div class="dashboard-item-content">
-            <div class="chart-container">
-                {{ember-chart type='bar' data=tags options=options}}
-            </div>
+            {{tags-chart activities=model.activities}}
         </div>
     </div>
 
