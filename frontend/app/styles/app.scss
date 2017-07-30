@@ -313,7 +313,7 @@ body {
 }
 
 .half {
-    flex: 0 0 calc(50% - 0.5em);
+    flex: 0 0 calc(50% - 1em);
     padding-right: 1em;
 
     &.half-right {
@@ -407,13 +407,8 @@ body {
 
 @media only screen and (min-width : 1100px) {
     .massive-half {
-        flex: 0 0 calc(50% - 0.5em);
-
+        flex: 0 0 calc(50% - 1em);
         padding-right: 1em;
-
-        &.half-right {
-            padding-right: 0;
-        }
     }
 
 }
