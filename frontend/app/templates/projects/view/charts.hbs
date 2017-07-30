@@ -4,9 +4,7 @@
             <h3>This week</h3>
         </div>
         <div class="dashboard-item-content">
-            <div class="chart-container gantt">
-                {{ember-chart type='line' data=gantt options=gantt_options}}
-            </div>
+            {{gantt-chart activities=model.activities}}
         </div>
     </div>
 
