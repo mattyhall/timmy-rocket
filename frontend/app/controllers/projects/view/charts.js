@@ -84,7 +84,7 @@ export default Ember.Controller.extend({
                 sd = s.format('ddd'),
                 ed = e.format('ddd');
             if (sd != ed) {
-                var middle = e.startOf('day');
+                var middle = e.clone().startOf('day');
                 var i = labels.indexOf(sd);
                 counts[i] += moment.duration(middle - s).asMilliseconds();
                 i = labels.indexOf(ed);
@@ -105,6 +105,94 @@ export default Ember.Controller.extend({
         };
     }),
 
+    ganttx: {datasets: [
+        {
+            backgroundColor: '#5ab0ee',
+            borderColor: '#5ab0ee',
+            fill: false,
+            borderWidth: 15,
+            pointRadius: 0,
+            data: [{x: 0, y: 5}, {x: 3, y: 5}]
+        }
+    ]},
+
+    gantt: Ember.computed('model.activities', 'refresh', function() {
+        let start_of_week = moment().startOf('isoweek');
+        let end_of_week = moment().endOf('isoweek');
+        let data = [];
+        let bar = (_) => { return {
+        };};
+        let f = (s, e) => {
+            let d = s.day();
+            if (s.day() == 0) {
+                d = 7;
+            }
+            return {
+                backgroundColor: '#5ab0ee',
+                borderColor: '#5ab0ee',
+                fill: false,
+                borderWidth: 25,
+                pointRadius: 0,
+                label: `${s.format("HH:mm:ss")}-${e.format("HH:mm:ss")}`,
+                data: [{x: s.hour() + s.minute()/60, y: d},
+                       {x: e.hour() + e.minute()/60, y: d}]
+            };
+        };
+        let activities = this.get('model.activities').filter((act) => {
+            let s = moment(act.get('start_time'));
+            return s.isAfter(start_of_week) && s.isBefore(end_of_week);
+        }).forEach((act) => {
+            let s = moment(act.get('start_time')),
+                e = moment(act.get('end_time')),
+                sd = s.format('d'),
+                ed = e.format('d');
+            if (sd != ed) {
+                let new_s = moment(s).clone();
+                let new_e = moment(e).clone();
+                data.push(f(s, new_s.endOf('day')));
+                data.push(f(new_e.startOf('day'), e));
+            } else {
+                data.push(f(s, e));
+            }
+        });
+        console.dir(data);
+        return {datasets: data};
+    }),
+
+    gantt_options: {
+        legend: {display: false},
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 8,
+                    autoSkip: false,
+
+                    callback: (val, ind, vals) => {
+                        if (val <= 0 || val >= 8) {
+                            return ''
+                        }
+                        var days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                        return days[val-1];
+                    }
+                }
+            }],
+            xAxes: [{
+                type: 'linear',
+                ticks: {
+                    autoSkip: true,
+                    autoSkipPadding: 20,
+                    min: 0,
+                    max: 24,
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }]
+        },
+        maintainAspectRatio: false,
+    },
+
     options: {
         legend: { display: false },
         scales: {
@@ -122,48 +210,6 @@ export default Ember.Controller.extend({
                     autoSkip: false
                 }
             }]
-        }
-    },
-
-    table: Ember.computed('refresh', 'model.activities', function() {
-        var last_day = null;
-        var first = true;
-        var table = [];
-        var total = 0;
-        this.get('model.activities').forEach(function(act) {
-            let s = moment(act.get('start_time')),
-                e = moment(act.get('end_time')),
-                duration = moment(e) - moment(s),
-                milli = moment.duration(duration).asMilliseconds(),
-                diff = moment.utc(milli);
-            var row = {
-                start: s,
-                end: e,
-                day: s.format('ddd DD MMMM'),
-                description: act.get('description'),
-                diff: diff,
-                model: act,
-                type: 'normal',
-                tags: act.get('tags').join(', ')
-            };
-            let day = s.format('LL');
-            total += milli;
-            if (day == last_day) {
-                row.day = "";
-            } else if (!first) {
-                total -= milli;
-                let total_diff = moment.utc(total);
-                let text = formatTimedifference([total_diff]);
-                table.push({type: 'total', time: text});
-                total = milli;
-            }
-            last_day = day;
-            table.push(row);
-            first = false;
-        });
-        let total_diff = moment.utc(total);
-        let text = formatTimedifference([total_diff]);
-        table.push({type: 'total', time: text});
-        return table;
-    })
+        },
+    }
 });
