@@ -22,9 +22,7 @@
             <h3>Days</h3>
         </div>
         <div class="dashboard-item-content">
-            <div class="chart-container">
-                {{ember-chart type='bar' data=days options=options}}
-            </div>
+            {{days-chart activities=model.activities}}
         </div>
     </div>
 
