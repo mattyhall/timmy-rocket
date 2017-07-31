@@ -75,6 +75,9 @@ export default Ember.Controller.extend({
 
     actions: {
         delete_activity(model) {
+            model.deleteRecord();
+            var t = this;
+            model.save().then(() => t.set('refresh', !t.get('refresh')));
         },
 
         create_activity() {

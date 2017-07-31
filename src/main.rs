@@ -157,6 +157,15 @@ fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>) -> Result<J
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
+#[delete("/activities/<a_id>")]
+fn delete_activity(conn: DbConn, a_id: i32) -> Result<Json, Custom<Json>> {
+    use timmy_rocket::schema::activities::dsl::*;
+    diesel::delete(activities.filter(id.eq(a_id)))
+        .execute(&*conn)
+        .map(|_| Json(json!({})))
+        .map_err(|err| {println!("{:?}", err); return Custom(Status::UnprocessableEntity, Json(json!({})));})
+}
+
 #[post("/activities", data = "<act>")]
 fn post_activity(conn: DbConn, act: Json<WrappedActivity>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities;
@@ -184,7 +193,8 @@ fn main() {
             "/",
             routes![get_projects, get_projects_qs, get_project, put_project,
                     delete_project, post_project,
-                    get_activities, get_activity, put_activity, post_activity],
+                    get_activities, get_activity, put_activity, post_activity,
+                    delete_activity],
         )
         .launch();
 }
