@@ -35,6 +35,9 @@ export default Ember.Controller.extend({
         var table = [];
         var day_record = {rows: []};
         var total = 0;
+        if (this.get('model.activities.length') == 0) {
+            return [];
+        }
         this.get('model.activities').forEach(function(act) {
             let s = moment(act.get('start_time')),
                 e = moment(act.get('end_time')),
