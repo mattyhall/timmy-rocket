@@ -7,8 +7,9 @@ export default Ember.Controller.extend({
         delete() {
             var model = this.get('model');
             model.deleteRecord();
+            var t = this;
             model.save().then(function() {
-                history.back();
+                t.transitionToRoute('projects');
             });
         },
     }
