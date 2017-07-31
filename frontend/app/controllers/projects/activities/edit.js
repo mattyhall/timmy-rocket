@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
     isNew: false,
     showProjects: false,
     proj_id: null,
+    showErrors: false,
 
     projects: Ember.computed('store', function() {
         this.get('store').findAll('project').then((projects) => {
@@ -14,6 +15,10 @@ export default Ember.Controller.extend({
 
     actions: {
         save() {
+            if (!this.get('model.validations.isValid')) {
+                this.set('showErrors', true);
+                return;
+            }
             if (this.get('showProjects')) {
                 var proj_id = this.get('proj_id');
                 this.get('projects').forEach((proj) => {

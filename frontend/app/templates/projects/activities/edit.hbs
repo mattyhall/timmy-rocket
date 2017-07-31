@@ -21,31 +21,13 @@
             {{input type="text" value=model.description}}
         </div>
 
-        <div class="input-group">
-            <label>Start time</label>
-            {{datetime-field date=model.start_time}}
-            <ul class="error-group">
-                {{#each errors.start_time as |error|}}
-                    <li class="error">
-                        {{fa-icon "exclamation-triangle"}}
-                        {{error}}
-                    </li>
-                {{/each}}
-            </ul>
-        </div>
+        {{#validated-input show=showErrors label="Start time" validation=model.validations.attrs.start_time as |act|}}
+            {{datetime-field date=model.start_time inputact=act}}
+        {{/validated-input}}
 
-        <div class="input-group">
-            <label>End time</label>
-            {{datetime-field date=model.end_time}}
-            <ul class="error-group">
-                {{#each errors.end_time as |error|}}
-                    <li class="error">
-                        {{fa-icon "exclamation-triangle"}}
-                        {{error}}
-                    </li>
-                {{/each}}
-            </ul>
-        </div>
+        {{#validated-input show=showErrors label="End time" validation=model.validations.attrs.end_time as |act|}}
+            {{datetime-field date=model.end_time inputact=act}}
+        {{/validated-input}}
 
         <div class="input-group">
             <label>Tags</label>
