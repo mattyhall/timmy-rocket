@@ -43,14 +43,18 @@ export default Ember.Controller.extend({
                 e = moment(act.get('end_time')),
                 duration = moment(e) - moment(s),
                 milli = moment.duration(duration).asMilliseconds(),
-                diff = moment.utc(milli);
+                diff = moment.utc(milli),
+                tags = act.get('tags');
+            if (!tags) {
+                tags = [];
+            }
             var row = {
                 start: s,
                 end: e,
                 description: act.get('description'),
                 diff: diff,
                 model: act,
-                tags: act.get('tags').join(', ')
+                tags: tags.join(', ')
             };
             let day = s.format('LL');
             total += milli;
