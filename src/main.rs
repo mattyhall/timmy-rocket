@@ -192,14 +192,15 @@ fn post_activity(conn: DbConn, act: Json<WrappedActivity>) -> Result<Json, Custo
 }
 
 #[post("/users/login", data = "<user>")]
-fn post_login(conn: DbConn, user: Json<NewUser>) -> Result<Json, Status> {
+fn post_login(conn: DbConn, user: Json<NewUser>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::users::dsl::*;
+    let e = || Custom(Status::Unauthorized, Json(json!({"errors": ["No such user or username and password did not match"]})));
     let db_user = users
         .filter(username.eq(&user.username))
         .first::<User>(&*conn)
-        .map_err(|_| Status::Unauthorized)?;
+        .map_err(|_| e())?;
     if !pwhash::bcrypt::verify(&user.password, &db_user.password) {
-        return Err(Status::Unauthorized);
+        return Err(e());
     }
     use timmy_rocket::schema::sessions;
     let expiry = chrono::Utc::now().naive_utc();
@@ -218,7 +219,7 @@ fn post_login(conn: DbConn, user: Json<NewUser>) -> Result<Json, Status> {
         .into(sessions::table)
         .get_result::<Session>(&*conn)
         .map(|sess| Json(json!({"token": sess.token})))
-        .map_err(|_| Status::Unauthorized)
+        .map_err(|_| e())
 
 }
 

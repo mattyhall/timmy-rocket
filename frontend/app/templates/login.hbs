@@ -15,6 +15,14 @@
             </div>
             <button class="btn green-btn" type="submit">Login</button>
         </form>
+        {{#if showErrors}}
+            <div class="error-group">
+                <li class="error">
+                    {{fa-icon "exclamation-triangle"}}
+                    No such user or username and password did not match
+                </li>
+            </div>
+        {{/if}}
         {{outlet}}
     </div>
 </div>
