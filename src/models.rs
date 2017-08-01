@@ -16,6 +16,7 @@ pub struct NewProject {
     pub title: String,
     pub description: Option<String>,
     pub active: bool,
+    pub user_id: i32,
 }
 
 #[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Debug)]

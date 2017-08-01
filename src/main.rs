@@ -32,18 +32,23 @@ struct ProjectsQS {
 #[get("/projects")]
 fn get_projects(conn: DbConn, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
-    Project::belonging_to(&user).load::<Project>(&*conn).map(|projs| {
-        Json(json!({
-            "projects": projs
-        }))
-    })
+    Project::belonging_to(&user).load::<Project>(&*conn).map(
+        |projs| {
+            Json(json!({
+                "projects": projs
+            }))
+        },
+    )
 }
 
 #[get("/projects?<qs>")]
 fn get_projects_qs(conn: DbConn, qs: ProjectsQS, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
     let projs = if let Some(val) = qs.active {
-        projects.filter(active.eq(val)).filter(user_id.eq(user.id)).load::<Project>(&*conn)
+        projects
+            .filter(active.eq(val))
+            .filter(user_id.eq(user.id))
+            .load::<Project>(&*conn)
     } else {
         projects.filter(user_id.eq(user.id)).load::<Project>(&*conn)
     };
@@ -57,7 +62,10 @@ fn get_projects_qs(conn: DbConn, qs: ProjectsQS, user: User) -> QueryResult<Json
 fn gp(conn: DbConn, p_id: i32, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
-    let project: Project = p::projects.find(p_id).filter(p::user_id.eq(user.id)).first(&*conn)?;
+    let project: Project = p::projects
+        .find(p_id)
+        .filter(p::user_id.eq(user.id))
+        .first(&*conn)?;
     let acts: Vec<Activity> = Activity::belonging_to(&project)
         .order(a::start_time.desc())
         .load::<Activity>(&*conn)?;
@@ -78,16 +86,28 @@ fn get_project(conn: DbConn, p_id: i32, user: User) -> QueryResult<Json> {
 }
 
 #[derive(Deserialize)]
+struct NoUserProject {
+    title: String,
+    description: Option<String>,
+    active: bool,
+}
+
+#[derive(Deserialize)]
 struct WrappedProject {
-    project: NewProject,
+    project: NoUserProject,
 }
 
 
 #[put("/projects/<p_id>", data = "<proj>")]
-fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>, user: User) -> Result<Json, Custom<Json>> {
+fn put_project(
+    conn: DbConn,
+    p_id: i32,
+    proj: Json<WrappedProject>,
+    user: User,
+) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl::*;
     let proj = proj.0.project;
-    diesel::update(projects.filter(id.eq(p_id)))
+    diesel::update(projects.filter(id.eq(p_id)).filter(user_id.eq(user.id)))
         .set((
             title.eq(proj.title),
             description.eq(proj.description),
@@ -102,6 +122,12 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>, user: User) 
 fn delete_project(conn: DbConn, p_id: i32, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
+    // Make sure the project belongs to the user before deleting
+    let _ = p::projects
+        .filter(p::id.eq(p_id))
+        .filter(p::user_id.eq(user.id))
+        .first::<Project>(&*conn)
+        .map_err(|err| Custom(Status::Unauthorized, Json(json!({}))))?;
     diesel::delete(a::activities.filter(a::project_id.eq(p_id)))
         .execute(&*conn)
         .map_err(|err| {
@@ -119,9 +145,19 @@ fn delete_project(conn: DbConn, p_id: i32, user: User) -> Result<Json, Custom<Js
 }
 
 #[post("/projects", data = "<proj>")]
-fn post_project(conn: DbConn, proj: Json<WrappedProject>, user: User) -> Result<Json, Custom<Json>> {
+fn post_project(
+    conn: DbConn,
+    proj: Json<WrappedProject>,
+    user: User,
+) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects;
-    let proj = proj.0.project;
+    let mut proj = proj.0.project;
+    let proj = NewProject {
+        title: proj.title,
+        description: proj.description,
+        active: proj.active,
+        user_id: user.id,
+    };
     diesel::insert(&proj)
         .into(projects::table)
         .get_result::<Project>(&*conn)
@@ -153,7 +189,12 @@ struct WrappedActivity {
 }
 
 #[put("/activities/<a_id>", data = "<act>")]
-fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>, user: User) -> Result<Json, Custom<Json>> {
+fn put_activity(
+    conn: DbConn,
+    a_id: i32,
+    act: Json<WrappedActivity>,
+    user: User,
+) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl::*;
     let act = act.0.activity;
     diesel::update(activities.filter(id.eq(a_id)))
@@ -181,7 +222,11 @@ fn delete_activity(conn: DbConn, a_id: i32, user: User) -> Result<Json, Custom<J
 }
 
 #[post("/activities", data = "<act>")]
-fn post_activity(conn: DbConn, act: Json<WrappedActivity>, user: User) -> Result<Json, Custom<Json>> {
+fn post_activity(
+    conn: DbConn,
+    act: Json<WrappedActivity>,
+    user: User,
+) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities;
     let act = act.0.activity;
     diesel::insert(&act)
@@ -194,7 +239,14 @@ fn post_activity(conn: DbConn, act: Json<WrappedActivity>, user: User) -> Result
 #[post("/users/login", data = "<user>")]
 fn post_login(conn: DbConn, user: Json<NewUser>) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::users::dsl::*;
-    let e = || Custom(Status::Unauthorized, Json(json!({"errors": ["No such user or username and password did not match"]})));
+    let e = || {
+        Custom(
+            Status::Unauthorized,
+            Json(
+                json!({"errors": ["No such user or username and password did not match"]}),
+            ),
+        )
+    };
     let db_user = users
         .filter(username.eq(&user.username))
         .first::<User>(&*conn)
