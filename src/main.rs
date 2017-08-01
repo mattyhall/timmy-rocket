@@ -9,7 +9,12 @@ extern crate rocket_contrib;
 extern crate serde_derive;
 extern crate diesel;
 extern crate rocket_cors;
+extern crate pwhash;
+extern crate base64;
+extern crate rand;
+extern crate chrono;
 
+use rand::Rng;
 use rocket::http::Status;
 use rocket::response::status::Custom;
 use rocket_cors::{AllowedOrigins, AllowedHeaders};
@@ -99,12 +104,18 @@ fn delete_project(conn: DbConn, p_id: i32) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl as a;
     diesel::delete(a::activities.filter(a::project_id.eq(p_id)))
         .execute(&*conn)
-        .map_err(|err| {println!("{:?}", err); return Custom(Status::UnprocessableEntity, Json(json!({})));})?;
+        .map_err(|err| {
+            println!("{:?}", err);
+            return Custom(Status::UnprocessableEntity, Json(json!({})));
+        })?;
 
     diesel::delete(p::projects.filter(p::id.eq(p_id)))
         .execute(&*conn)
         .map(|_| Json(json!({})))
-        .map_err(|err| {println!("{:?}", err); return Custom(Status::UnprocessableEntity, Json(json!({})));})
+        .map_err(|err| {
+            println!("{:?}", err);
+            return Custom(Status::UnprocessableEntity, Json(json!({})));
+        })
 }
 
 #[post("/projects", data = "<proj>")]
@@ -163,7 +174,10 @@ fn delete_activity(conn: DbConn, a_id: i32) -> Result<Json, Custom<Json>> {
     diesel::delete(activities.filter(id.eq(a_id)))
         .execute(&*conn)
         .map(|_| Json(json!({})))
-        .map_err(|err| {println!("{:?}", err); return Custom(Status::UnprocessableEntity, Json(json!({})));})
+        .map_err(|err| {
+            println!("{:?}", err);
+            return Custom(Status::UnprocessableEntity, Json(json!({})));
+        })
 }
 
 #[post("/activities", data = "<act>")]
@@ -175,6 +189,37 @@ fn post_activity(conn: DbConn, act: Json<WrappedActivity>) -> Result<Json, Custo
         .get_result::<Activity>(&*conn)
         .map(|act| Json(json!({"activity": act})))
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
+}
+
+#[post("/users/login", data = "<user>")]
+fn post_login(conn: DbConn, user: Json<NewUser>) -> Result<Json, Status> {
+    use timmy_rocket::schema::users::dsl::*;
+    let db_user = users
+        .filter(username.eq(&user.username))
+        .first::<User>(&*conn)
+        .map_err(|_| Status::Unauthorized)?;
+    if !pwhash::bcrypt::verify(&user.password, &db_user.password) {
+        return Err(Status::Unauthorized);
+    }
+    use timmy_rocket::schema::sessions;
+    let expiry = chrono::Utc::now().naive_utc();
+    let mut rng = rand::OsRng::new().unwrap();
+    let mut buff = [0u8; 16];
+    rng.fill_bytes(&mut buff);
+    println!("{:?}", buff);
+    let token = base64::encode(&buff);
+    println!("{}", token);
+    let s = NewSession {
+        token,
+        expiry,
+        user_id: db_user.id,
+    };
+    diesel::insert(&s)
+        .into(sessions::table)
+        .get_result::<Session>(&*conn)
+        .map(|sess| Json(json!({"token": sess.token})))
+        .map_err(|_| Status::Unauthorized)
+
 }
 
 fn main() {
@@ -194,7 +239,8 @@ fn main() {
             routes![get_projects, get_projects_qs, get_project, put_project,
                     delete_project, post_project,
                     get_activities, get_activity, put_activity, post_activity,
-                    delete_activity],
+                    delete_activity,
+                    post_login],
         )
         .launch();
 }

@@ -1,5 +1,7 @@
 use super::schema::projects;
 use super::schema::activities;
+use super::schema::users;
+use super::schema::sessions;
 use chrono::naive::NaiveDateTime;
 
 #[derive(Insertable, Serialize, Deserialize, FromForm, Debug)]
@@ -39,4 +41,35 @@ pub struct Activity {
     pub start_time: NaiveDateTime,
     pub end_time: NaiveDateTime,
     pub tags: Vec<String>,
+}
+
+#[derive(Queryable, Identifiable, Serialize, Deserialize, Debug)]
+pub struct User {
+    pub id: i32,
+    pub username: String,
+    pub password: String,
+}
+
+#[derive(Insertable, Serialize, Deserialize, Debug)]
+#[table_name="users"]
+pub struct NewUser {
+    pub username: String,
+    pub password: String,
+}
+
+
+#[derive(Queryable, Identifiable, Serialize, Deserialize, Debug)]
+pub struct Session {
+    pub id: i32,
+    pub user_id: i32,
+    pub token: String,
+    pub expiry: NaiveDateTime,
+}
+
+#[derive(Insertable, Serialize, Deserialize, Debug)]
+#[table_name="sessions"]
+pub struct NewSession {
+    pub user_id: i32,
+    pub token: String,
+    pub expiry: NaiveDateTime,
 }
