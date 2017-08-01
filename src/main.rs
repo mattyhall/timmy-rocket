@@ -32,7 +32,7 @@ struct ProjectsQS {
 #[get("/projects")]
 fn get_projects(conn: DbConn, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
-    projects.load::<Project>(&*conn).map(|projs| {
+    Project::belonging_to(&user).load::<Project>(&*conn).map(|projs| {
         Json(json!({
             "projects": projs
         }))
@@ -43,9 +43,9 @@ fn get_projects(conn: DbConn, user: User) -> QueryResult<Json> {
 fn get_projects_qs(conn: DbConn, qs: ProjectsQS, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
     let projs = if let Some(val) = qs.active {
-        projects.filter(active.eq(val)).load::<Project>(&*conn)
+        projects.filter(active.eq(val)).filter(user_id.eq(user.id)).load::<Project>(&*conn)
     } else {
-        projects.load::<Project>(&*conn)
+        projects.filter(user_id.eq(user.id)).load::<Project>(&*conn)
     };
     projs.map(|projs| {
         Json(json!({
@@ -54,10 +54,10 @@ fn get_projects_qs(conn: DbConn, qs: ProjectsQS, user: User) -> QueryResult<Json
     })
 }
 
-fn gp(conn: DbConn, p_id: i32) -> QueryResult<Json> {
+fn gp(conn: DbConn, p_id: i32, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
-    let project: Project = p::projects.find(p_id).first(&*conn)?;
+    let project: Project = p::projects.find(p_id).filter(p::user_id.eq(user.id)).first(&*conn)?;
     let acts: Vec<Activity> = Activity::belonging_to(&project)
         .order(a::start_time.desc())
         .load::<Activity>(&*conn)?;
@@ -74,7 +74,7 @@ fn gp(conn: DbConn, p_id: i32) -> QueryResult<Json> {
 
 #[get("/projects/<p_id>")]
 fn get_project(conn: DbConn, p_id: i32, user: User) -> QueryResult<Json> {
-    gp(conn, p_id)
+    gp(conn, p_id, user)
 }
 
 #[derive(Deserialize)]
@@ -94,7 +94,7 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>, user: User) 
             active.eq(proj.active),
         ))
         .get_result::<Project>(&*conn)
-        .and_then(|proj| gp(conn, proj.id))
+        .and_then(|proj| gp(conn, proj.id, user))
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
@@ -125,7 +125,7 @@ fn post_project(conn: DbConn, proj: Json<WrappedProject>, user: User) -> Result<
     diesel::insert(&proj)
         .into(projects::table)
         .get_result::<Project>(&*conn)
-        .and_then(|proj| gp(conn, proj.id))
+        .and_then(|proj| gp(conn, proj.id, user))
         .map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
@@ -207,9 +207,7 @@ fn post_login(conn: DbConn, user: Json<NewUser>) -> Result<Json, Custom<Json>> {
     let mut rng = rand::OsRng::new().unwrap();
     let mut buff = [0u8; 16];
     rng.fill_bytes(&mut buff);
-    println!("{:?}", buff);
     let token = base64::encode(&buff);
-    println!("{}", token);
     let s = NewSession {
         token,
         expiry,

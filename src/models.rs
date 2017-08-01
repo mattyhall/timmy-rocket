@@ -19,12 +19,14 @@ pub struct NewProject {
 }
 
 #[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Debug)]
+#[belongs_to(User)]
 #[has_many(Activity)]
 pub struct Project {
     pub id: i32,
     pub title: String,
     pub description: Option<String>,
     pub active: bool,
+    pub user_id: i32,
 }
 
 #[derive(Insertable, Serialize, Deserialize, Debug)]
@@ -49,7 +51,8 @@ pub struct Activity {
     pub tags: Vec<String>,
 }
 
-#[derive(Queryable, Identifiable, Serialize, Deserialize, Debug)]
+#[derive(Queryable, Identifiable, Associations, Serialize, Deserialize, Debug)]
+#[has_many(Project)]
 pub struct User {
     pub id: i32,
     pub username: String,
