@@ -8,7 +8,15 @@
         </ul>
     </div>
     <div class="main-content">
-        <div class="header"></div>
+        <div class="header">
+            <ul>
+                {{#if session.isAuthenticated }}
+                    <li><a href="#" {{action "invalidate"}}>Log out</a></li>
+                {{ else }}
+                    <li>{{#link-to "login"}}Login{{/link-to}}</li>
+               {{/if}}
+           </ul>
+        </div>
         {{outlet}}
     </div>
 </div>

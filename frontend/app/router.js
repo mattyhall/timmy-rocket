@@ -20,6 +20,7 @@ Router.map(function() {
   });
 
   this.route('timer');
+  this.route('login');
 });
 
 export default Router;

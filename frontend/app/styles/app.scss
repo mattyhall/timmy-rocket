@@ -68,6 +68,20 @@ body {
     color: #f0f4f6;
     width: 100%;
     height: 70px;
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        float: right;
+        padding-top: 1.3em;
+        padding-right: 1em;
+    }
+
+    a {
+        text-decoration: none;
+        color: #f0f4f6;
+    }
 }
 
 .inner-container {
@@ -378,6 +392,10 @@ body {
 
 .centred {
     text-align: center;
+}
+
+#identification {
+    width: 188px;
 }
 
 @import 'stopwatch';
