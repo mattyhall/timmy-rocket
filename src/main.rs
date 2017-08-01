@@ -30,7 +30,7 @@ struct ProjectsQS {
 }
 
 #[get("/projects")]
-fn get_projects(conn: DbConn) -> QueryResult<Json> {
+fn get_projects(conn: DbConn, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
     projects.load::<Project>(&*conn).map(|projs| {
         Json(json!({
@@ -40,7 +40,7 @@ fn get_projects(conn: DbConn) -> QueryResult<Json> {
 }
 
 #[get("/projects?<qs>")]
-fn get_projects_qs(conn: DbConn, qs: ProjectsQS) -> QueryResult<Json> {
+fn get_projects_qs(conn: DbConn, qs: ProjectsQS, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::projects::dsl::*;
     let projs = if let Some(val) = qs.active {
         projects.filter(active.eq(val)).load::<Project>(&*conn)
@@ -73,7 +73,7 @@ fn gp(conn: DbConn, p_id: i32) -> QueryResult<Json> {
 }
 
 #[get("/projects/<p_id>")]
-fn get_project(conn: DbConn, p_id: i32) -> QueryResult<Json> {
+fn get_project(conn: DbConn, p_id: i32, user: User) -> QueryResult<Json> {
     gp(conn, p_id)
 }
 
@@ -84,7 +84,7 @@ struct WrappedProject {
 
 
 #[put("/projects/<p_id>", data = "<proj>")]
-fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
+fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl::*;
     let proj = proj.0.project;
     diesel::update(projects.filter(id.eq(p_id)))
@@ -99,7 +99,7 @@ fn put_project(conn: DbConn, p_id: i32, proj: Json<WrappedProject>) -> Result<Js
 }
 
 #[delete("/projects/<p_id>")]
-fn delete_project(conn: DbConn, p_id: i32) -> Result<Json, Custom<Json>> {
+fn delete_project(conn: DbConn, p_id: i32, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects::dsl as p;
     use timmy_rocket::schema::activities::dsl as a;
     diesel::delete(a::activities.filter(a::project_id.eq(p_id)))
@@ -119,7 +119,7 @@ fn delete_project(conn: DbConn, p_id: i32) -> Result<Json, Custom<Json>> {
 }
 
 #[post("/projects", data = "<proj>")]
-fn post_project(conn: DbConn, proj: Json<WrappedProject>) -> Result<Json, Custom<Json>> {
+fn post_project(conn: DbConn, proj: Json<WrappedProject>, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::projects;
     let proj = proj.0.project;
     diesel::insert(&proj)
@@ -130,7 +130,7 @@ fn post_project(conn: DbConn, proj: Json<WrappedProject>) -> Result<Json, Custom
 }
 
 #[get("/activities")]
-fn get_activities(conn: DbConn) -> QueryResult<Json> {
+fn get_activities(conn: DbConn, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::activities::dsl::*;
     activities.load::<Activity>(&*conn).map(|acts| {
         Json(json!({
@@ -140,7 +140,7 @@ fn get_activities(conn: DbConn) -> QueryResult<Json> {
 }
 
 #[get("/activities/<a_id>")]
-fn get_activity(conn: DbConn, a_id: i32) -> QueryResult<Json> {
+fn get_activity(conn: DbConn, a_id: i32, user: User) -> QueryResult<Json> {
     use timmy_rocket::schema::activities::dsl::*;
     activities.find(a_id).first::<Activity>(&*conn).map(|a| {
         Json(json!({"activity": a}))
@@ -153,7 +153,7 @@ struct WrappedActivity {
 }
 
 #[put("/activities/<a_id>", data = "<act>")]
-fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>) -> Result<Json, Custom<Json>> {
+fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl::*;
     let act = act.0.activity;
     diesel::update(activities.filter(id.eq(a_id)))
@@ -169,7 +169,7 @@ fn put_activity(conn: DbConn, a_id: i32, act: Json<WrappedActivity>) -> Result<J
 }
 
 #[delete("/activities/<a_id>")]
-fn delete_activity(conn: DbConn, a_id: i32) -> Result<Json, Custom<Json>> {
+fn delete_activity(conn: DbConn, a_id: i32, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl::*;
     diesel::delete(activities.filter(id.eq(a_id)))
         .execute(&*conn)
@@ -181,7 +181,7 @@ fn delete_activity(conn: DbConn, a_id: i32) -> Result<Json, Custom<Json>> {
 }
 
 #[post("/activities", data = "<act>")]
-fn post_activity(conn: DbConn, act: Json<WrappedActivity>) -> Result<Json, Custom<Json>> {
+fn post_activity(conn: DbConn, act: Json<WrappedActivity>, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities;
     let act = act.0.activity;
     diesel::insert(&act)
