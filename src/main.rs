@@ -176,11 +176,16 @@ fn get_activities(conn: DbConn, user: User) -> QueryResult<Json> {
 }
 
 #[get("/activities/<a_id>")]
-fn get_activity(conn: DbConn, a_id: i32, user: User) -> QueryResult<Json> {
+fn get_activity(conn: DbConn, a_id: i32, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl::*;
+    use timmy_rocket::schema::projects as p;
+    let (_, p) = activities.inner_join(p::table).filter(id.eq(a_id)).first::<(Activity, Project)>(&*conn).map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))?;
+    if p.user_id != user.id {
+        return Err(Custom(Status::Unauthorized, Json(json!({}))));
+    }
     activities.find(a_id).first::<Activity>(&*conn).map(|a| {
         Json(json!({"activity": a}))
-    })
+    }).map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))
 }
 
 #[derive(Deserialize)]
@@ -196,6 +201,11 @@ fn put_activity(
     user: User,
 ) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl::*;
+    use timmy_rocket::schema::projects as p;
+    let (_, p) = activities.inner_join(p::table).filter(id.eq(a_id)).first::<(Activity, Project)>(&*conn).map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))?;
+    if p.user_id != user.id {
+        return Err(Custom(Status::Unauthorized, Json(json!({}))));
+    }
     let act = act.0.activity;
     diesel::update(activities.filter(id.eq(a_id)))
         .set((
@@ -212,6 +222,11 @@ fn put_activity(
 #[delete("/activities/<a_id>")]
 fn delete_activity(conn: DbConn, a_id: i32, user: User) -> Result<Json, Custom<Json>> {
     use timmy_rocket::schema::activities::dsl::*;
+    use timmy_rocket::schema::projects as p;
+    let (_, p) = activities.inner_join(p::table).filter(id.eq(a_id)).first::<(Activity, Project)>(&*conn).map_err(|_| Custom(Status::UnprocessableEntity, Json(json!({}))))?;
+    if p.user_id != user.id {
+        return Err(Custom(Status::Unauthorized, Json(json!({}))));
+    }
     diesel::delete(activities.filter(id.eq(a_id)))
         .execute(&*conn)
         .map(|_| Json(json!({})))
