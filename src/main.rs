@@ -304,7 +304,7 @@ fn main() {
             "/",
             routes![get_projects, get_projects_qs, get_project, put_project,
                     delete_project, post_project,
-                    get_activities, get_activity, put_activity, post_activity,
+                    get_activity, put_activity, post_activity,
                     delete_activity,
                     post_login],
         )
